@@ -1,0 +1,169 @@
+{
+  "paragraphs": [
+    {
+      "title": "xBookTitle",
+      "text": "import psycopg2\nimport psycopg2.extras\nimport nltk\nfrom nltk.tokenize import regexp_tokenize\n\nconn \u003d psycopg2.connect(database\u003d\"notes\", user\u003d\"postgres\", password\u003d\"post\", host\u003d\"127.0.0.1\", port\u003d\"5432\")\n\n#cur \u003d conn.cursor()\ncur \u003d conn.cursor(cursor_factory\u003dpsycopg2.extras.DictCursor)\nsql \u003d \"\"\"select * from infobot\n        where id like %s\"\"\"\n\ncur.execute(sql, (\"《本草纲目》_01_001_%\",))\nrows \u003d cur.fetchall()\nfor x in rows:\n    #print(x)\n    #print(x[5])\n    print(x[\u0027title\u0027])\n    #print(x[\u0027content\u0027])\n    ##### 01  #######\n    #str \u003d u\u0027胡洽居士《百病方》 《孙兆口诀》 《梅师集验方》\u0027\n    #author \u003d regexp_tokenize(str, u\"(^.*?)《\")\n    #books \u003d regexp_tokenize(str, u\"《(.*?)》\")\n\n    #str \u003d u\u0027《兰室秘藏》 《东垣试效方》王海藏\u0027\n    author \u003d regexp_tokenize(x[\u0027content\u0027], u\"》([^《]*?)$\")\n    books \u003d regexp_tokenize(x[\u0027content\u0027], u\"《(.*?)》\")\n\n    #print(author)\n    print(books)\n\ncur.close()\nconn.close()",
+      "user": "anonymous",
+      "dateUpdated": "2020-10-28 16:42:23.593",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/python",
+        "title": true,
+        "lineNumbers": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "《本草纲目》_历代诸家本草\n[]\n《本草纲目》_历代诸家本草_《神农本草经》\n[\u0027本草经\u0027, \u0027汉书· 艺文志\u0027, \u0027楼护传\u0027, \u0027七录\u0027, \u0027神农本草\u0027, \u0027淮南子\u0027, \u0027汉书\u0027, \u0027世本\u0027, \u0027淮南子\u0027, \u0027本草经\u0027]\n《本草纲目》_历代诸家本草_《名医别录》\n[\u0027神农本草\u0027, \u0027名医别录\u0027, \u0027神农\u0027, \u0027别录\u0027, \u0027神农本经\u0027, \u0027素问\u0027, \u0027桐君采药录\u0027, \u0027药对\u0027, \u0027神农本经\u0027]\n《本草纲目》_历代诸家本草_《桐君采药录》\n[\u0027四时采药\u0027, \u0027太常采药时月\u0027]\n《本草纲目》_历代诸家本草_《雷公药对》\n[\u0027吴氏本草\u0027, \u0027北史\u0027, \u0027李氏药录\u0027, \u0027神农本草\u0027]\n《本草纲目》_历代诸家本草_《吴氏本草》\n[\u0027雷公炮炙论\u0027, \u0027制伏草石论\u0027]\n《本草纲目》_历代诸家本草_《唐本草》\n[\u0027神农本草经\u0027, \u0027英公唐本草\u0027, \u0027唐新本草\u0027, \u0027本草经\u0027, \u0027本经\u0027, \u0027别录\u0027]\n《本草纲目》_历代诸家本草_《药总诀》\n[\u0027药象口诀\u0027]\n《本草纲目》_历代诸家本草_《药性本草》\n[\u0027药性论\u0027, \u0027药性论\u0027, \u0027药性本草\u0027, \u0027脉经\u0027, \u0027千金食治\u0027, \u0027千金备急方\u0027, \u0027千金翼方\u0027, \u0027枕中素书\u0027, \u0027摄生真录\u0027, \u0027福禄论\u0027, \u0027三教论\u0027, \u0027老子庄子注\u0027]\n《本草纲目》_历代诸家本草_《食疗本草》\n[\u0027周礼\u0027, \u0027必效方\u0027, \u0027补养方\u0027, \u0027唐史\u0027]\n《本草纲目》_历代诸家本草_《本草拾遗》\n[\u0027神农本经\u0027, \u0027本草拾遗\u0027, \u0027本草\u0027]\n《本草纲目》_历代诸家本草_《海药本草》\n[\u0027南海药谱\u0027, \u0027海药本草\u0027, \u0027四声本草\u0027]\n《本草纲目》_历代诸家本草_《删繁本草》\n[\u0027本草音义\u0027, \u0027本草性事类\u0027]\n《本草纲目》_历代诸家本草_《食性本草》\n[\u0027食经\u0027, \u0027崔浩食经\u0027, \u0027竺喧食经\u0027, \u0027膳馐养疗\u0027, \u0027食医心镜\u0027, \u0027食治通说\u0027, \u0027奉亲养老书\u0027]\n《本草纲目》_历代诸家本草_《蜀本草》\n[\u0027唐本草\u0027, \u0027图经\u0027, \u0027蜀本草\u0027]\n《本草纲目》_历代诸家本草_《开宝本草》\n[\u0027拾遗\u0027, \u0027别录\u0027, \u0027本经\u0027, \u0027本经\u0027]\n《本草纲目》_历代诸家本草_《嘉补注本草》\n[\u0027嘉补注本草\u0027, \u0027神农本草经\u0027, \u0027名医别录\u0027, \u0027唐本草\u0027, \u0027开宝本草\u0027, \u0027蜀本草\u0027, \u0027本经\u0027, \u0027神农本经\u0027, \u0027名医别录\u0027, \u0027唐本\u0027, \u0027开宝\u0027, \u0027本经\u0027, \u0027唐本\u0027, \u0027开宝\u0027, \u0027本经\u0027]\n《本草纲目》_历代诸家本草_《图经本草》\n[]\n《本草纲目》_历代诸家本草_《证类本草》\n[\u0027嘉补注本草\u0027, \u0027图经本草\u0027, \u0027唐本草\u0027, \u0027陈藏器本草\u0027, \u0027食疗本草\u0027, \u0027雷公炮炙\u0027, \u0027唐本\u0027, \u0027食疗\u0027, \u0027证类本草\u0027, \u0027大观本草\u0027, \u0027政和本草\u0027]\n《本草纲目》_历代诸家本草_《本草别说》\n[\u0027本草\u0027]\n《本草纲目》_历代诸家本草_《日华诸家本草》\n[\u0027千家姓\u0027, \u0027本草衍义\u0027, \u0027补注\u0027, \u0027图经\u0027]\n《本草纲目》_历代诸家本草_《洁古珍珠囊》\n[\u0027珍珠囊\u0027, \u0027灵\u0027, \u0027素\u0027, \u0027珍珠囊\u0027, \u0027病机气宜保命集\u0027, \u0027活法机要\u0027, \u0027用药法象\u0027, \u0027春秋\u0027, \u0027书\u0027, \u0027易\u0027, \u0027洁古珍珠囊\u0027, \u0027，着《医学发明\u0027, \u0027兰室秘藏\u0027, \u0027此事难知\u0027, \u0027汤液本草\u0027, \u0027汤液大法\u0027, \u0027医垒元戎\u0027, \u0027阴证略例\u0027, \u0027论萃英\u0027, \u0027钱氏补遗\u0027]\n《本草纲目》_历代诸家本草_《日用本草》\n[]\n《本草纲目》_历代诸家本草_《本草歌括》\n[]\n《本草纲目》_历代诸家本草_《本草衍义补遗》\n[\u0027衍义\u0027, \u0027格致余论\u0027, \u0027局方发挥\u0027, \u0027伤寒辨疑\u0027, \u0027外科精要新论\u0027, \u0027风木问答\u0027]\n《本草纲目》_历代诸家本草_《本草发挥》\n[]\n《本草纲目》_历代诸家本草_《救荒本草》\n[\u0027普济方\u0027, \u0027袖珍方\u0027, \u0027野菜谱\u0027]\n《本草纲目》_历代诸家本草_《庚辛玉册》\n[\u0027外丹本草\u0027, \u0027造化指南\u0027, \u0027丹房镜源\u0027, \u0027宝藏论\u0027, \u0027丹台录\u0027, \u0027造化指南\u0027, \u0027太清草木方\u0027, \u0027太清服食经\u0027, \u0027太清丹药录\u0027, \u0027黄白秘法\u0027, \u0027三十六水法\u0027, \u0027伏制草石论\u0027]\n《本草纲目》_历代诸家本草_《本草集要》\n[]\n《本草纲目》_历代诸家本草_《食物本草》\n[]\n《本草纲目》_历代诸家本草_《食鉴本草》\n[]\n《本草纲目》_历代诸家本草_《本草会编》\n[\u0027本草集要\u0027, \u0027本草蒙筌\u0027, \u0027集要\u0027, \u0027蒙筌\u0027]\n《本草纲目》_历代诸家本草_《本草纲目》\n[]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1603753840014_1578998021",
+      "id": "paragraph_1603753840014_1578998021",
+      "dateCreated": "2020-10-26 16:10:40.014",
+      "dateStarted": "2020-10-28 16:21:33.785",
+      "dateFinished": "2020-10-28 16:21:33.859",
+      "status": "FINISHED"
+    },
+    {
+      "title": "xCompatibility",
+      "text": "import nltk\nfrom nltk.tokenize import regexp_tokenize\n\n#### 02 ####\nstr \u003d u\u0027甘草（术、苦参、干漆为之使。恶远志。忌猪肉。）\u0027\n\nent \u003d regexp_tokenize(str, u\"(^.*)（\")\ntemp \u003d regexp_tokenize(str, u\"（(.*)）\")\ntemp \u003d temp[0].split(\"。\")\nfor s in temp:\n    print(s)\n    agents \u003d regexp_tokenize(s, u\"(.*)为之使\")\n    print(\"agents\", agents)\n\n    nice \u003d regexp_tokenize(s, u\"得(.*)良\")\n    print(\"良\", nice)\n\n    temp \u003d regexp_tokenize(s, u\"([恶,忌,畏,伏,杀,制])(.*)\")\n    for i in temp:\n        print(i)\n\n#print(ent)\n#print(temp)\n",
+      "user": "anonymous",
+      "dateUpdated": "2020-10-27 13:58:57.352",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/python",
+        "lineNumbers": true,
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "术、苦参、干漆为之使\nagents [\u0027术、苦参、干漆\u0027]\n良 []\n恶远志\nagents []\n良 []\n(\u0027恶\u0027, \u0027远志\u0027)\n忌猪肉\nagents []\n良 []\n(\u0027忌\u0027, \u0027猪肉\u0027)\n\nagents []\n良 []\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1603773721400_1920835301",
+      "id": "paragraph_1603773721400_1920835301",
+      "dateCreated": "2020-10-26 21:42:01.400",
+      "dateStarted": "2020-10-27 13:54:11.544",
+      "dateFinished": "2020-10-27 13:54:11.582",
+      "status": "FINISHED"
+    },
+    {
+      "user": "anonymous",
+      "config": {},
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1603774478521_663275476",
+      "id": "paragraph_1603774478521_663275476",
+      "dateCreated": "2020-10-26 21:54:38.521",
+      "status": "READY"
+    },
+    {
+      "text": "import nltk\nfrom nltk.tokenize import sent_tokenize, word_tokenize\nfrom nltk import word_tokenize\nfrom nltk.corpus import stopwords\nimport jieba\nfrom nltk.tokenize import regexp_tokenize\n\n#nltk.download(\u0027punkt\u0027)\n#nltk.download(\u0027stopwords\u0027)\n#nltk.download(\u0027averaged_perceptron_tagger\u0027)\n#ensw \u003d stopwords.words(\u0027english\u0027)\n#print(ensw)\n\n#EXAMPLE_TEXT \u003d \"Python is awesome. The sky is pinkish-blue. You shouldn\u0027t eat cardboard.\"\n#EXAMPLE_TEXT \u003d u\u0027这是斯坦福中文分词器测试\u0027\nEXAMPLE_TEXT \u003d u\u0027魏《吴普本草》\u0027\n\n#aa\u003djieba.lcut(EXAMPLE_TEXT)\n#print(aa)\n\n#tokens \u003d word_tokenize(EXAMPLE_TEXT)\n#words_tagged \u003d nltk.pos_tag(tokens)\n#print(words_tagged)\n\n#sents \u003d sent_tokenize(EXAMPLE_TEXT)\n#print(sents)\n\n#sents \u003d [nltk.word_tokenize(sent) for sent in sents]\n#print(sents)\n\n#sents \u003d [nltk.pos_tag(sent) for sent in sents]\n#sents \u003d [nltk.pos_tag(sent) for sent in aa]\n#print(sents)\n\n#regexp_tokenize(EXAMPLE_TEXT, u\"(.*)(是)(.*)\")\n\naa \u003d regexp_tokenize(EXAMPLE_TEXT, u\"(.*)《(.*)》\")\ngrammar \u003d nltk.CFG.fromstring(\"\"\"\n     S -\u003e NP VP\n     NP -\u003e Det N\n     VP -\u003e TV NP\n     Det -\u003e \"the\" | \"a\"\n     TV -\u003e \"eats\"|\"dreams\"\n    \"\"\")\nparser \u003d nltk.ChartParser(grammar)\nfor tree in parser.parse(aa):\n    rint(tree)",
+      "user": "anonymous",
+      "dateUpdated": "2020-10-26 16:05:03.614",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/python",
+        "lineNumbers": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "ERROR",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "Fail to execute line 46: for tree in parser.parse(aa):\nTraceback (most recent call last):\n  File \"/tmp/1603752098338-0/zeppelin_python.py\", line 158, in \u003cmodule\u003e\n    exec(code, _zcUserQueryNameSpace)\n  File \"\u003cstdin\u003e\", line 46, in \u003cmodule\u003e\n  File \"/home/celine/.local/lib/python3.6/site-packages/nltk/parse/chart.py\", line 1484, in parse\n    chart \u003d self.chart_parse(tokens)\n  File \"/home/celine/.local/lib/python3.6/site-packages/nltk/parse/chart.py\", line 1442, in chart_parse\n    self._grammar.check_coverage(tokens)\n  File \"/home/celine/.local/lib/python3.6/site-packages/nltk/grammar.py\", line 678, in check_coverage\n    \"Grammar does not cover some of the \" \"input words: %r.\" % missing\nValueError: Grammar does not cover some of the input words: \"(\u0027魏\u0027, \u0027吴普本草\u0027)\".\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1603508821862_644876029",
+      "id": "paragraph_1603508821862_644876029",
+      "dateCreated": "2020-10-23 20:07:01.863",
+      "dateStarted": "2020-10-26 16:05:03.633",
+      "dateFinished": "2020-10-26 16:05:03.666",
+      "status": "ERROR"
+    },
+    {
+      "user": "anonymous",
+      "config": {},
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1603508825964_904013328",
+      "id": "paragraph_1603508825964_904013328",
+      "dateCreated": "2020-10-23 20:07:05.964",
+      "status": "READY"
+    }
+  ],
+  "name": "xInfobot",
+  "id": "2FNGABAA2",
+  "defaultInterpreterGroup": "python",
+  "version": "0.9.0-preview2",
+  "noteParams": {},
+  "noteForms": {},
+  "angularObjects": {},
+  "config": {
+    "isZeppelinNotebookCronEnable": false
+  },
+  "info": {}
+}
