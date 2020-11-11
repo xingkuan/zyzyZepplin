@@ -431,6 +431,48 @@
       "status": "FINISHED"
     },
     {
+      "title": "xChapter 5 and plus",
+      "text": "import codecs\nimport re\nimport psycopg2\nimport psycopg2.extras\n\nimport random\nimport string\n\nrsltList \u003d []\n\ndef parseParagraph(name, str):\n    print(name)\n    #print(str)\n    #lines \u003d str.splitlines()\n    src \u003d \u0027\u0027\n    nameExpond \u003d\u0027\u0027\n    wei \u003dNone\n    qi \u003d None\n    du \u003d None\n    #extract source:\n    temp \u003d re.findall(u\u0027（《(.*?)》）\u0027, str)\n    if temp:\n        src \u003d temp[0]\n        print(src)\n    #extract source:\n    temp \u003d re.findall(u\u0027【释名】(.*?)【\u0027, str, re.DOTALL)\n    if temp:\n        nameExpond \u003d temp[0]\n        print(nameExpond)\n    #extract tri characteristics:\n    temp \u003d re.findall(u\u0027【气味】(.*?)。\u0027, str, re.DOTALL)\n    if temp:\n        triCharact \u003d temp[0].split(\u0027，、\u0027)\n        triCharact \u003d re.split(u\"[、,，]\", temp[0])\n        #print(triCharact)\n        for i in triCharact:\n            tt \u003d i.strip()\n            if re.search(\u0027[咸甘辛苦]\u0027, tt):\n                if wei is None:\n                    wei \u003d tt\n                else:\n                    wei \u003d wei + \u0027,\u0027 + tt\n            if re.search(\u0027[平温寒冷热]\u0027, tt):\n                if qi is None:\n                    qi \u003d tt\n                else:\n                    qi \u003d qi + \u0027,\u0027 + tt\n            #print(tt)\n            if re.search(\u0027[毒]\u0027, tt):\n                if du is None:\n                    du \u003d tt\n                else:\n                    du \u003d du + \u0027,\u0027 + tt\n\n        print(wei, qi, du)\n        #print((triCharact[0].strip(), triCharact[1].strip(), triCharact[2].strip()))\n        \n    \n    #m \u003d re.findall(u\u0027(^.*)（(.*）)\u0027,str)\n    #if m:\n    #    t \u003d re.split(u\"[、,，]\", m[0][0])\n    #    for b in t:\n    #        print(b)\n    return None\n\n\n\n# infobots are to be stored in a database, to be furtuer parsed into finer infobot    \nconn \u003d psycopg2.connect(database\u003d\"notes\", user\u003d\"postgres\", password\u003d\"post\", host\u003d\"127.0.0.1\", port\u003d\"5432\")\n#print(\"Database opened successfully\")\n#cur \u003d conn.cursor()\ncur \u003d conn.cursor(cursor_factory\u003dpsycopg2.extras.DictCursor)\nsql \u003d \"\"\"select * from infobot\n        where id \u003e %s\n        order by id\"\"\"\n\n\n#### 0 ####\ncur.execute(sql, (\"《本草纲目》_05\",))\nrows \u003d cur.fetchall()\nfor x in rows:\n    #print(x[\u0027title\u0027])\n    temp \u003d re.sub(u\u0027《本草纲目》_\u0027, \u0027\u0027, x[\u0027title\u0027])\n    #print(type(name))\n    name \u003d re.sub(u\u0027[【】]\u0027, \u0027\u0027, temp)\n    name \u003d re.sub(u\u0027_\u0027, \u0027|\u0027, name)\n\n    temp \u003d parseParagraph(name, x[\u0027content\u0027])\n\nfor i in rsltList:\n    print(i)\n\nconn.commit()\ncur.close()\nconn.close()",
+      "user": "anonymous",
+      "dateUpdated": "2020-11-10 16:06:31.519",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/python",
+        "lineNumbers": true,
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "water|雨水|立春雨水\nwater|雨水|梅雨水\nwater|雨水|液雨水\nwater|雨水\n拾遗\n\n（时珍曰）∶地气升为云，天气降为雨，故人之汗，以天地之雨名之。\n\n咸 平 无毒\nwater|潦水\n纲目\n\n时珍曰∶降注雨水谓之潦，又淫雨为潦。\n\n韩退之诗云，潢潦无根源，朝灌夕已除，是矣。\n \n\n甘 平 无毒\nwater|露水\n拾遗\n\n时珍曰∶露者，阴气之液也，夜气着物而润泽于道旁也。\n \n\n甘 平 无毒\nwater|甘露\n拾遗\n\n膏露（《纲目》）\n、瑞露（《纲目》）\n、天酒（《纲目》）\n、神浆。\n时珍曰∶按《瑞应图》云∶甘露，美露也。神灵之精，仁瑞之泽，其凝如脂，其甘如饴，故有甘、膏、酒、浆之名。\n\n《晋中兴书》云∶王者敬养耆老，则降于松柏；尊贤容众，则降于竹苇。《列星图》云∶天乳一星明润，则甘露降。以上诸说，皆瑞气所感者也。\n\n《吕氏春秋》云∶水之美者，三危之露。和之美者，揭雩之露，其色紫。《拾遗记》云∶昆仑之山有甘露，望之如丹，着草木则皎莹如雪。\n\n《山海经》云∶诸沃之野，摇山之民，甘露是饮不寿者八百岁。《一统志》云∶雅州蒙山常有甘露。以上诸说，皆方域常产者也。杜镐言∶甘露，非瑞也，乃草木将枯，精华顿发于外，谓之雀饧，于理甚通。\n \n\n甘 大寒 无毒\nwater|甘露\nwater|明水\n拾遗\n\n方诸水。\n藏器曰∶方诸，大蚌也。熟摩令热，向月取之，得水二三合，亦如朝露。阳燧向日，方诸向月，皆能致水火也。《周礼》明诸承水于月，陈馔为玄酒是也。\n \n时珍曰∶明水者，取其清明纯洁，敬之至也。《周礼》∶司氏，以夫燧取明火于日，鉴取明水于月，以恭祭祀。魏伯阳《参同契》云∶阳燧以取火，非日不生光；方诸非星月，安能得水浆。\n\n《淮南子》云∶方诸见月，则津而为水。注者或以方诸为石，或以为大蚌，或以为五石炼成，皆非也。按《考工记》云，铜锡相半，谓之鉴燧之剂，是火为燧、水为鉴也。高堂隆云∶阳燧一名阳符，取火于日。阴燧一名阴符，取水于月。并以铜作之，谓之水火之镜。此说是矣。干宝《搜神记》云∶金锡之性，一也。五月丙午日午时铸，为阳燧；十一月壬子日子时铸，为阴燧。\n \n\n甘 寒 无毒\nwater|冬霜\n拾遗\n\n时珍曰∶阴盛则露凝为霜，霜能杀物而露能滋物，性随时异也。\n\n干象占云∶天气下降而为露，清风薄之而成霜。霜所以杀万物，消。\n\n当降而不降，当杀物而不杀物，皆政弛而慢也。不当降而降，不当杀物而杀物，皆政急而残也。\n\n许慎《说文》云∶早霜，曰 KT；白霜，曰皑。又有玄霜。\n \n承曰∶凡取霜，以鸡羽扫之，瓶中密封阴处，久亦不坏。\n \n\n甘 寒 无毒\nwater|腊雪\n\n时珍曰∶按刘熙《释名》云∶雪，洗也。洗除瘴疠虫蝗也。凡花五出，雪花六出，阴之成数也。冬至后第三戊为腊。腊前三雪，大宜菜麦，又杀虫蝗。\n\n腊雪密封阴处，数十年亦不坏；用水浸五谷种，则耐旱不生虫；洒几席间，则蝇自去；淹藏一切果食，不蛀蠹，岂非除虫蝗之验乎。\n \n藏器曰∶春雪有虫，水亦易败，所以不收。\n \n\n甘 冷 无毒\nwater|雹\n拾遗\n\n时珍曰∶程子云∶雹者阴阳相搏之气，盖气也。或云∶雹者，炮也，中物如炮也。\n\n曾子云∶阳之专气为雹，阴之专气为霰。陆农师云∶阴包阳为雹，阳包阴为霰。雪六出而成花，雹三出而成实。阴阳之辨也。《五雷经》云∶雹乃阴阳不顺之气结成。亦有懒龙鳞甲之内，寒冻生冰，为雷所发，飞走堕落，大者如斗升，小者如弹丸。又蜥蜴含水，亦能作雹，未审果否？\n \n\n咸 冷 有毒\nwater|夏冰\n拾遗\n\n凌（去声）。\n时珍曰∶冰者，太阴之精，水极似土，变柔为刚，所谓物极反兼化也。故字从水，从。《周礼》∶凌人掌冰，以供祭祀宾客。《左传》∶古者日在北陆而藏冰，西陆朝觌而出之。其藏之也，深山穹谷，涸阴冱寒；其用之也，录位宾客丧祭。\n \n郎曰∶藏冰以时，则雷出不震；弃冰不用，则雷不发而震。今人冬月藏冰于窖，登之以盐，是也。《淮南万毕术》，有凝水石作冰法，非真也。\n \n\n甘 冷 无毒\nwater|夏冰\nwater|半天河\n别录\n\n上池水。\n弘景曰∶此竹篱头水，及空树穴中水也。\n \n时珍曰∶《战国策》云∶长桑君饮扁鹊以上池之水，能洞见脏腑。注云∶上池水，半天河也。然别有法。\n \n\n甘 微寒 无毒\nwater|屋漏水\n拾遗\n辛,苦 None 有毒\nwater|流水|千里水,东流水,甘澜水\n拾遗\n甘 平 无毒\nwater|流水|逆流水\n灵枢经\nwater|流水\n拾遗\nwater|井泉水|井华水\n嘉\n甘 平 无毒\nwater|井泉水|新汲水\n嘉\nwater|井泉水\n\n时珍曰∶井字象井形，泉字象水流穴中之形。\n \n\nwater|节气水|神水。\nwater|节气水|腊日水\nwater|节气水|秋水\nwater|节气水|重午水\nwater|节气水\n纲目\nwater|醴泉\n拾遗\n\n甘泉。\n时珍曰∶醴，薄酒也，泉味如之，故名。出无常处，王者德至渊泉，时代升平，则醴泉出，可以养老。\n \n《瑞应图》云∶醴泉，水之精也，味甘如醴，流之所及，草木皆茂；饮之令人多寿。《东观记》云∶光武中元元年，醴泉出京师，人饮之者，痼疾皆除。\n\n甘 平 无毒\nwater|玉井水\n拾遗\n甘 平 无毒\nwater|乳穴水\n拾遗\n甘 温 无毒\nwater|温汤\n拾遗\n\n温泉（《纲目》）\n、沸泉。\n藏器曰∶下有硫黄，即令水热，犹有硫黄臭。硫黄主诸疮，故水亦宜然。当其热处，可猪羊、熟鸡子也。\n \n时珍曰∶温泉有处甚多。按胡仔《渔隐丛话》云∶汤泉多作硫黄气，浴之则袭人肌肤。唯新安黄山是朱砂泉，春时水即微红色，可煮茗。长安骊山是石泉，不甚作气也。朱砂泉虽红而不热，当是雄黄尔。有砒石处亦有汤泉，浴之有毒。\n \n\n辛 热 微毒\nwater|温汤\nwater|盐胆水\n拾遗\n 卤水。\n藏器曰∶此乃盐初熟，槽中沥下黑汁也。\n \n时珍曰∶盐下沥水，则味苦不堪食。今人用此水，收豆腐。独孤滔云∶盐胆煮四黄，焊物。\n \n\n咸,苦 None 有大毒\nwater|阿井水\n纲目\n甘,咸 平 无毒\nwater|山岩泉水\n拾遗\n\n时珍曰∶此山岩土石间所出泉，流为溪涧者也。《尔雅》云∶水正出，曰滥泉；悬出，曰沃泉；仄出曰泉。其泉源远清冷，或山有玉石美草木者为良；其山有黑土毒石恶草者不可用。\n \n陆羽云∶凡瀑涌漱湍之水，饮之令人有颈疾。\n颖曰∶昔在浔阳，忽一日城中马死数百。询之，云∶数日前雨，洗出山谷中蛇虫之毒，马饮其水然也。\n \n\n甘 平 无毒\nwater|古冢中水\n拾遗\nwater|粮罂中水\n拾遗\n辛 平 有小毒\nwater|赤龙浴水\n拾遗\nNone None 有小毒\nwater|车辙中水|碧海水\n拾遗\n咸 小温 有小毒\nwater|车辙中水\n纲目\n\n时珍曰∶辙，乃车行迹也。\n \n\nwater|地浆\n别录\n\n土浆。\n弘景曰∶此掘黄土地作坎，深三尺，以新汲水沃入搅浊，少顷取清用之，故曰地浆，亦曰土浆。\n \n\n甘 寒 无毒\nwater|热汤\n纲目\n\n百沸汤（《纲目》） 、麻沸汤（仲景）、太和汤。\n\n甘 平 无毒\nwater|生熟汤\n拾遗\n\n阴阳水。 时珍曰∶以新汲水百沸汤合一盏和匀，故曰生熟，今人谓之阴阳水。\n \n\n甘,咸 None 无毒\nwater|齑水\n纲目\n咸 None 无毒\nwater|浆水\n嘉\n\n酸浆。 嘉谟曰∶浆，酢也。炊粟米热，投冷水中，浸五、六日，味酢，生白花，色类浆，故名。若浸至败者，害人。\n \n\n甘 微温 无毒\nwater|甑气水\n拾遗\nwater|铜壶滴漏水\n纲目\nwater|三家洗碗水\n拾遗\nwater|磨刀水\n纲目\n咸 寒 无毒\nwater|浸蓝水\n纲目\n辛,苦 寒 无毒\nwater|猪槽中水\n拾遗\nNone None 无毒\nwater|市门溺坑水\n拾遗\nNone None 无毒\nwater|洗手足水\n纲目\nwater|洗儿汤\n纲目\nwater\n拾遗\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1604692619222_540437802",
+      "id": "paragraph_1604692619222_540437802",
+      "dateCreated": "2020-11-06 11:56:59.222",
+      "dateStarted": "2020-11-10 16:06:31.544",
+      "dateFinished": "2020-11-10 16:06:31.730",
+      "status": "FINISHED"
+    },
+    {
       "user": "anonymous",
       "config": {},
       "settings": {
@@ -440,9 +482,9 @@
       "apps": [],
       "runtimeInfos": {},
       "progressUpdateIntervalMs": 500,
-      "jobName": "paragraph_1604692619222_540437802",
-      "id": "paragraph_1604692619222_540437802",
-      "dateCreated": "2020-11-06 11:56:59.222",
+      "jobName": "paragraph_1604969034890_668813820",
+      "id": "paragraph_1604969034890_668813820",
+      "dateCreated": "2020-11-09 16:43:54.890",
       "status": "READY"
     }
   ],
