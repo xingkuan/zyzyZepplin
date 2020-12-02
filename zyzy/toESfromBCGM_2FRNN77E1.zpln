@@ -1,0 +1,72 @@
+{
+  "paragraphs": [
+    {
+      "text": "%python\n\nimport psycopg2\nimport psycopg2.extras\nimport nltk\nfrom nltk.tokenize import regexp_tokenize\n\nimport re\n\nfrom datetime import datetime\nfrom elasticsearch import Elasticsearch\n\nprint(\"xxx\")\n\nes \u003d Elasticsearch([\"localhost\"], port\u003d9200)\n\ndef saveES(i, t, c):\n    print(i)\n    body \u003d {\n      \u0027name\u0027: t,\n      \u0027content\u0027: c\n    }\n    print(body)\n    es.index(index\u003d\u0027infobot\u0027, doc_type\u003d\u0027v1\u0027, id\u003di, body\u003dbody)\n\n\n\npsqlConn \u003d psycopg2.connect(database\u003d\"notes\", user\u003d\"postgres\", password\u003d\"post\", host\u003d\"127.0.0.1\", port\u003d\"5432\")\n\ncur \u003d psqlConn.cursor(cursor_factory\u003dpsycopg2.extras.DictCursor)\nsql \u003d \"\"\"select * from infobot\n        where id like %s\"\"\"\n\ncur.execute(sql, (\"《本草纲目》_0a%\",))\nrows \u003d cur.fetchall()\nfor x in rows:\n    print(x[\u0027title\u0027])\n\n    saveES(x[\"id\"], x[\"title\"], x[\"content\"])\n\ncur.close()\nconn.close()",
+      "user": "anonymous",
+      "dateUpdated": "2020-12-01 21:28:34.107",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/python",
+        "lineNumbers": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "xxx\n《本草纲目》_《本草纲目》原序\n《本草纲目》_0a_001_weq\n{\u0027name\u0027: \u0027《本草纲目》_《本草纲目》原序\u0027, \u0027content\u0027: \u0027纪称∶望龙光,知古剑;觇宝气,辨明珠。故萍实商羊,非天明莫洞。厥后博 物称华,辨字称康,析宝玉称倚顿,亦仅仅晨星耳。\\n\\n楚蕲阳李君东璧,一日过予山园谒予,留 饮数有《本草纲目》数十卷。谓予曰 ∶时珍,荆楚鄙人也。幼多羸疾,质成钝椎;长耽典籍, 若啖蔗饴。遂渔猎群书,搜罗百氏。凡子、史、经、传、声韵、农圃、医卜、星相、乐府诸家, 稍有得处,辄着数言。\\n\\n古有《本草》一书,自炎黄及汉、梁、唐、宋,下迨国朝,注解群氏旧 矣。第其中舛谬差讹遗漏,不可枚数。乃敢奋编摩之志,僭纂述之权。岁历三十稔,书考八百 余家,稿凡三易。复者芟之,阙者缉之,讹者绳之。\\n\\n旧本一千五百一十八种,今增药三百七十四种,分为一十六部,着成五十二卷。虽非集成,亦粗大备,僭名曰《本草纲目》。愿乞一言, 以托不朽。\\n\\n予开卷细玩,每药标正名为纲,附释名为目,正始也;次以集解、辨疑、正误,详其土产形状也;次以气味、主治、附方,着其体用也。上自坟典,下及传奇,凡有相关,靡不备采。如入金谷之园,种色夺目;如登龙君之宫,宝藏悉陈;如对冰壶玉鉴,毛发可指数也。 博而不繁,详而有要,综核究竟,直窥渊海。\\n\\n兹岂仅以医书觏哉? 实性理之精微,格物之《通典》,帝王之秘,臣民之重宝也。李君用心嘉惠何勤哉!\\n\\n噫,玉莫剖,朱紫相倾,弊也久矣。故 辨专车之骨,必俟鲁儒;博支机之石,必访卖卜。\\n\\n予方着《州卮言》,恚博古如《丹铅卮言》后 乏人也,何幸睹兹集哉!兹集也,藏之深山石室无当,盍锲之,以共天下后世味《太玄》如子 云者。\\n\\n时万历岁庚寅春上元日,州山人凤洲王世贞拜撰\\n\u0027}\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1606865945690_1342113432",
+      "id": "paragraph_1606865945690_1342113432",
+      "dateCreated": "2020-12-01 15:39:05.690",
+      "dateStarted": "2020-12-01 21:28:34.110",
+      "dateFinished": "2020-12-01 21:28:34.188",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%python\n",
+      "user": "anonymous",
+      "dateUpdated": "2020-12-01 17:25:29.816",
+      "config": {},
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1606872329815_528992246",
+      "id": "paragraph_1606872329815_528992246",
+      "dateCreated": "2020-12-01 17:25:29.815",
+      "status": "READY"
+    }
+  ],
+  "name": "toESfromBCGM",
+  "id": "2FRNN77E1",
+  "defaultInterpreterGroup": "python",
+  "version": "0.9.0-preview2",
+  "noteParams": {},
+  "noteForms": {},
+  "angularObjects": {},
+  "config": {
+    "isZeppelinNotebookCronEnable": false
+  },
+  "info": {}
+}
