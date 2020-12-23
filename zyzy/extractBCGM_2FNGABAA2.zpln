@@ -4,7 +4,7 @@
       "title": "x BookTitle",
       "text": "import psycopg2\nimport psycopg2.extras\nimport nltk\nfrom nltk.tokenize import regexp_tokenize\n\nimport re\n\nfrom elasticsearch import Elasticsearch\n\nes \u003d Elasticsearch([\"localhost\"], port\u003d9200)\n\ndef saveES(id, src, ent, content):\n    body \u003d {\n      \u0027name\u0027: ent,\n#      \u0027aname\u0027: [\u0027test1\u0027, \u0027joy1\u0027, \u0027fun1\u0027],\n      \u0027source\u0027: src, \n#      \u0027content\u0027: content,\n      \u0027tags\u0027: [\u0027literature\u0027]\n    }\n#    print(body)\n    es.index(index\u003d\u0027infobot\u0027, doc_type\u003d\u0027v1\u0027, id\u003did, body\u003dbody)\n    \nconn \u003d psycopg2.connect(database\u003d\"notes\", user\u003d\"postgres\", password\u003d\"post\", host\u003d\"127.0.0.1\", port\u003d\"5432\")\n\n#cur \u003d conn.cursor()\ncur \u003d conn.cursor(cursor_factory\u003dpsycopg2.extras.DictCursor)\nsql \u003d \"\"\"select * from infobot\n        where id like %s\"\"\"\n\nbooks \u003d[]\ndataSrc \u003d None\ncur.execute(sql, (\"《本草纲目》_04_%\",))\nrows \u003d cur.fetchall()\nfor x in rows:\n    print(x[\u0027title\u0027])\n    dataSrc \u003d x[\"id\"]\n    #book names in title\n    temp \u003d re.sub(u\u0027《本草纲目》_\u0027, \u0027\u0027, x[\u0027title\u0027])\n    t \u003d regexp_tokenize(temp, u\"《(.*?)》\")    #example line: \u003cb0 《神农本草经》\n    #print(t)\n    #for b in t:\n    #    print(b)\n    #book names in content \n    c \u003d regexp_tokenize(x[\u0027content\u0027], u\"《(.*?)》\")  #extract from content lines\n    #print(c)\n    books \u003d books + t + c\n    #for b in c:\n    #    print(b)\n\n#dedup\nbooks \u003d list(dict.fromkeys(books))\nfor b in books:\n    saveES(dataSrc+b, dataSrc, b, None)\n    print(b)\n\ncur.close()\nconn.close()",
       "user": "anonymous",
-      "dateUpdated": "2020-12-07 14:05:03.898",
+      "dateUpdated": "2020-12-11 16:17:40.619",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -30,7 +30,7 @@
         "msg": [
           {
             "type": "TEXT",
-            "data": "《本草纲目》_历代诸家本草\n《本草纲目》_literaturelist\n《本草纲目》_采集诸家本草药品总数\n《本草纲目》_《神农本经》名例\n《本草纲目》_characteristics\n《本草纲目》_processing\n《本草纲目》_attitudes\n《本草纲目》_prescriptionprinciples\n《本草纲目》_scaledifferences\n《本草纲目》_principlesofconsuming\n《本草纲目》_采药分六气岁物\n《本草纲目》_七方\n《本草纲目》_十剂\n《本草纲目》_primitivetheories\n《本草纲目》_grandsummary\n《本草纲目》_脏腑虚实标本用药式\n《本草纲目》_引经报使\n《本草纲目》_历代诸家本草_《神农本草经》\n《本草纲目》_历代诸家本草_《名医别录》\n《本草纲目》_历代诸家本草_《桐君采药录》\n《本草纲目》_历代诸家本草_《雷公药对》\n《本草纲目》_历代诸家本草_《吴氏本草》\n《本草纲目》_历代诸家本草_《唐本草》\n《本草纲目》_历代诸家本草_《药总诀》\n《本草纲目》_历代诸家本草_《药性本草》\n《本草纲目》_历代诸家本草_《食疗本草》\n《本草纲目》_历代诸家本草_《本草拾遗》\n《本草纲目》_历代诸家本草_《海药本草》\n《本草纲目》_历代诸家本草_《删繁本草》\n《本草纲目》_历代诸家本草_《食性本草》\n《本草纲目》_历代诸家本草_《蜀本草》\n《本草纲目》_历代诸家本草_《开宝本草》\n《本草纲目》_历代诸家本草_《嘉补注本草》\n《本草纲目》_历代诸家本草_《图经本草》\n《本草纲目》_历代诸家本草_《证类本草》\n《本草纲目》_历代诸家本草_《本草别说》\n《本草纲目》_历代诸家本草_《日华诸家本草》\n《本草纲目》_历代诸家本草_《洁古珍珠囊》\n《本草纲目》_历代诸家本草_《日用本草》\n《本草纲目》_历代诸家本草_《本草歌括》\n《本草纲目》_历代诸家本草_《本草衍义补遗》\n《本草纲目》_历代诸家本草_《本草发挥》\n《本草纲目》_历代诸家本草_《救荒本草》\n《本草纲目》_历代诸家本草_《庚辛玉册》\n《本草纲目》_历代诸家本草_《本草集要》\n《本草纲目》_历代诸家本草_《食物本草》\n《本草纲目》_历代诸家本草_《食鉴本草》\n《本草纲目》_历代诸家本草_《本草会编》\n《本草纲目》_历代诸家本草_《本草纲目》\n《本草纲目》_literaturelist_引据古今医家书目\n《本草纲目》_literaturelist_引据古今经史百家书目\n《本草纲目》_literaturelist_旧本所引者。\n《本草纲目》_《神农本经》名例_上中下药\n《本草纲目》_《神农本经》名例_editingnotes\n《本草纲目》_《神农本经》名例_君臣佐使\n《本草纲目》_《神农本经》名例_气味application\n《本草纲目》_《神农本经》名例_阴阳配合\n《本草纲目》_《神农本经》名例_根茎花实\n《本草纲目》_characteristics_七情\n《本草纲目》_characteristics_五味四气.\n《本草纲目》_characteristics_chronicalandacute\n《本草纲目》_processing_采造生熟\n《本草纲目》_attitudes_不治六失\n《本草纲目》_prescriptionprinciples_\n《本草纲目》_scaledifferences_\n《本草纲目》_principlesofconsuming_\n《本草纲目》_采药分六气岁物_\n《本草纲目》_七方_\n《本草纲目》_七方_大方\n《本草纲目》_七方_小方\n《本草纲目》_七方_缓方\n《本草纲目》_七方_急方\n《本草纲目》_七方_奇方\n《本草纲目》_七方_偶方\n《本草纲目》_七方_复方\n《本草纲目》_十剂_summary\n《本草纲目》_十剂_宣剂\n《本草纲目》_十剂_通剂\n《本草纲目》_十剂_补剂\n《本草纲目》_十剂_泄剂\n《本草纲目》_十剂_轻剂\n《本草纲目》_十剂_重剂\n《本草纲目》_十剂_滑剂\n《本草纲目》_十剂_涩剂\n《本草纲目》_十剂_燥剂\n《本草纲目》_十剂_湿剂\n《本草纲目》_primitivetheories_summary\n《本草纲目》_primitivetheories_故AAA\n《本草纲目》_primitivetheories_BBB\n《本草纲目》_primitivetheories_CCC\n《本草纲目》_grandsummary_\n《本草纲目》_grandsummary_气味阴阳\n《本草纲目》_grandsummary_五味宜忌\n《本草纲目》_grandsummary_五欲\n《本草纲目》_grandsummary_五宜\n《本草纲目》_grandsummary_五禁\n《本草纲目》_grandsummary_seasons\n《本草纲目》_grandsummary_\n《本草纲目》_grandsummary_五走\n《本草纲目》_grandsummary_五伤\n《本草纲目》_grandsummary_五过\n《本草纲目》_grandsummary_五味偏胜\n《本草纲目》_grandsummary_标本阴阳\n《本草纲目》_grandsummary_升降浮沉\n《本草纲目》_grandsummary_顺时气而养天和\n《本草纲目》_grandsummary_五运六淫用药式\n《本草纲目》_grandsummary_六腑六脏用药气味补泻\n《本草纲目》_grandsummary_五脏五味补泻\n《本草纲目》_脏腑虚实标本用药式_肝\n《本草纲目》_脏腑虚实标本用药式_心\n《本草纲目》_脏腑虚实标本用药式_脾\n《本草纲目》_脏腑虚实标本用药式_肺\n《本草纲目》_脏腑虚实标本用药式_肾\n《本草纲目》_脏腑虚实标本用药式_命门\n《本草纲目》_脏腑虚实标本用药式_三焦\n《本草纲目》_脏腑虚实标本用药式_胆\n《本草纲目》_脏腑虚实标本用药式_胃\n《本草纲目》_脏腑虚实标本用药式_大肠\n《本草纲目》_脏腑虚实标本用药式_小肠\n《本草纲目》_脏腑虚实标本用药式_膀胱\n《本草纲目》_引经报使_\n神农本草经\n名医别录\n药录\n本草\n炮炙论\n唐本草\n药性本草\n千金食治\n食疗本草\n本草拾遗\n海药本草\n四声本草\n食性本草\n蜀本草\n开宝本草\n嘉本草\n图经本草\n日华本草\n证类本草\n本草衍义\n用药法象\n本草补遗\n日用本草\n救荒本草\n食物本草\n食鉴本草\n本草会编\n本草蒙筌\n本草纲目\n神农本经\n珍珠囊\n本草经\n汉书· 艺文志\n楼护传\n七录\n神农本草\n淮南子\n汉书\n世本\n神农\n别录\n素问\n桐君采药录\n药对\n四时采药\n太常采药时月\n雷公药对\n吴氏本草\n北史\n李氏药录\n雷公炮炙论\n制伏草石论\n英公唐本草\n唐新本草\n本经\n药总诀\n药象口诀\n药性论\n脉经\n千金备急方\n千金翼方\n枕中素书\n摄生真录\n福禄论\n三教论\n老子庄子注\n周礼\n必效方\n补养方\n唐史\n南海药谱\n删繁本草\n本草音义\n本草性事类\n食经\n崔浩食经\n竺喧食经\n膳馐养疗\n食医心镜\n食治通说\n奉亲养老书\n图经\n拾遗\n嘉补注本草\n唐本\n开宝\n陈藏器本草\n雷公炮炙\n食疗\n大观本草\n政和本草\n本草别说\n日华诸家本草\n千家姓\n补注\n洁古珍珠囊\n灵\n素\n病机气宜保命集\n活法机要\n春秋\n书\n易\n，着《医学发明\n兰室秘藏\n此事难知\n汤液本草\n汤液大法\n医垒元戎\n阴证略例\n论萃英\n钱氏补遗\n本草歌括\n本草衍义补遗\n衍义\n格致余论\n局方发挥\n伤寒辨疑\n外科精要新论\n风木问答\n本草发挥\n普济方\n袖珍方\n野菜谱\n庚辛玉册\n外丹本草\n造化指南\n丹房镜源\n宝藏论\n丹台录\n太清草木方\n太清服食经\n太清丹药录\n黄白秘法\n三十六水法\n伏制草石论\n本草集要\n集要\n蒙筌\n开元广济方\n天宝单方图\n贞元广利方\n太仓公方\n太平圣惠方\n扁鹊方\n金匮玉函方\n华佗方\n伤寒论\n支太医方\n随身备急方\n徐文伯方\n古今录验方\n秦承祖方\n外台秘要方\n中藏经\n延龄至宝方\n范汪东阳方\n孙真人食忌\n孙真人枕中记\n席延赏方\n千金髓方\n叶天师枕中记\n箧中秘宝方\n箧中方\n传信方\n续传信方\n延年秘录\n救三死方\n兵部手集方\n御药院方\n纂要方\n刘涓子鬼遗方\n乘闲集效方\n短剧方\n肘后百一方\n服气精义方\n删繁方\n百病方\n孙兆口诀\n梅师集验方\n海上集验方\n深师香港脚论\n集验方\n伤寒类要\n斗门方\n独行方\n伤寒身验方\n胜金方\n药准\n简要济众方\n塞上方\n博济方\n灵苑方\n救急方\n张路大效方\n劳瘵方\n近效方\n经验方\n经验后方\n苏沈良方\n十全博救方\n必用方\n子母秘录\n产乳集验方\n产宝\n谭氏小儿方\n小儿宫气方\n万全方\n何首乌传\n普救方\n神仙服食方\n威灵仙传\n寒食散方\n牛经\n马经\n灵枢经\n玄密\n医说\n黄帝书\n褚氏遗书\n医史\n难经\n圣济总录\n病机赋\n甲乙经\n圣济经\n药性赋\n金匮要略\n服食经\n病原论\n神农食忌\n神仙服食经\n经心录\n魏武帝食制\n资生经\n饮膳正要\n原病式\n太清灵宝方\n玄明粉方\n宣明方\n脉诀刊误\n服椒诀\n本草指南\n本草权度\n证治本草\n医余录\n人参传\n炼丹药秘诀\n名医录\n艾叶传\n儒门事亲\n医学启源\n菖蒲传\n医鉴\n附子传\n洁古家珍\n医学发明\n辨惑论\n脾胃论\n东垣试效方\n医家大法\n阴证发明\n卫生宝鉴\n丹溪纂要\n丹溪医案\n丹溪心法\n丹溪心法附余\n丹溪活套\n撄宁心要\n惠民和剂局方\n三因方\n千金月令方\n济生方\n易简方\n万全护命方\n澹寮方\n是斋指迷方\n仁斋直指方\n选奇方\n杨氏家藏方\n济生拔萃方\n卫生易简方\n卫生家宝方\n本事方\n鸡峰备急方\n传家秘宝方\n养生主论\n真西山卫生歌\n九龠卫生方\n岭南方\n岭南卫生方\n养生必用方\n医学正传\n永类钤方\n医学集成\n瑞竹堂经验方\n溯洄集\n医学统旨\n积善堂经验方\n证治要诀\n医学纲目\n孙氏仁存堂经验方\n金匮钩玄\n医学指南\n杨氏颐真堂经验方\n玉机微义\n医学切问\n陆氏积德堂经验方\n医经国小\n医林集要\n德生堂经验方\n乾坤秘韫\n医林正宗\n法生堂经验方\n乾坤生意\n医方选要\n保寿堂经验方\n法天生意\n医方摘要\n总要\n医方大成\n活人心统\n奇效良方\n诸证辨疑\n集效方\n禹讲师经验方\n儒医精要\n濒湖医案\n试效录验方\n濒湖集简方\n经验济世方\n蔺氏经验方\n简便方\n试效方\n坦仙皆效方\n得效方\n居家必用方\n经验良方\n卫生杂兴\n救急易方\n张氏经验方\n杏林摘要\n急救良方\n龚氏经验方\n韩氏医通\n方外奇方\n徐氏家传方\n张三丰仙传方\n海上方\n郑氏家传方\n王氏奇方\n海上仙方\n试验方\n群书日抄\n海上名方\n包会应验方\n群书续抄\n十便良方\n孟氏诜方\n潜江切要\n怪证奇方\n生生编\n青囊杂纂\n奇疾方\n摘玄方\n济急仙方\n纂要奇方\n端效方\n惠济方\n奚囊备急方\n指南方\n百一选方\n寿域神方\n世医通变要法\n扶寿精方\n三元延寿书\n发明证治\n医方捷径\n保庆集\n保生余录\n神医普救方\n南行方\n体仁汇编\n传信适用方\n究源方\n明医杂着\n摄生妙用方\n如宜方\n济生秘览\n王氏手集\n萧静观方\n锦囊秘览\n唐仲举方\n杨尧辅方\n金匮名方\n严月轩方\n郑师甫方\n芝隐方\n通妙真人方\n三十六黄方\n十药神书\n玄感传尸论\n上清紫庭追劳方\n南阳活人书\n伤寒书\n伤寒总病论\n伤寒蕴要\n伤寒明理论\n伤寒直格\n伤寒六书\n活人书括\n妇人良方\n妇人方\n妇人良方补遗\n济阴方\n妇人明理论\n妇人千金家藏方\n便产须知\n二难宝鉴\n妇人经验方\n小儿直诀\n幼幼新书\n幼科类萃\n小儿方\n活幼心书\n袖珍小儿方\n全幼心鉴\n活幼口议\n阮氏小儿方\n婴童百问\n活幼全书\n郑氏小儿方\n婴孩宝书\n卫生总微论\n保幼大全\n鲍氏小儿方\n婴孩妙诀\n童子秘诀\n全婴方\n小儿宫气集\n博爱心鉴\n痘疹管见\n正宗\n痘疹证治\n痘疹要诀\n痘疹渊源\n痘疹论\n痘疹便览\n外科精要\n外科心法\n外科通玄论\n外科精义\n外科发挥\n外科经验方\n外科秘传\n痈疽方论\n外科集验方\n眼科龙木论\n飞鸿集\n原机启微集\n明目经验方\n宣明眼科\n眼科针钩方\n咽喉口齿方\n尔雅注疏\n尚书注疏\n春秋左传注疏\n孔子家语\n礼记注疏\n周礼注疏\n列子\n庄子\n荀子\n淮南子鸿烈解\n吕氏春秋\n抱朴子\n战国策\n史记\n后汉书\n三国志\n晋书\n宋书\n梁史\n隋书\n唐书\n轩辕本纪\n穆天子传\n秦穆公传\n蜀王本纪\n鲁定公传\n汉武故事\n汉武内传\n壶居士传\n崔魏公传\n李宝臣传\n何君谟传\n李孝伯传\n李司封传\n柳宗元传\n梁四公子记\n唐武后别传\n南岳魏夫人传\n三茅真君传\n神仙传\n搜神记\n紫灵元君传\n列仙传\n稽神录\n玄中记\n洞微志\n洞冥记\n广异记\n异苑\n拾遗记\n太平广记\n续齐谐记\n酉阳杂俎\n异术\n典术\n通典\n异类\n纂文\n博物志\n魏略\n神异经\n荆州记\n山海经\n九州记\n荆楚岁时记\n华山记\n广州记\n南州记\n嵩山记\n南州异物志\n南蛮记\n异物志\n南方异物志\n太原地志\n岭表录异\n岭南异物志\n永嘉记\n扶南记\n燕吴行纪\n南城志\n五溪记\n番禺记\n白泽图\n斗门经\n东华真人煮石法\n房室图\n太清草木记\n神仙芝草经\n异鱼图\n太清石璧记\n灵芝瑞草经\n粉图\n魏王花木志\n夏禹神仙经\n四时纂要\n齐民要术\n三洞要录\n广志\n种植书\n八帝圣化经\n古今注\n天香传\n八帝玄变经\n诗义疏\n茶经\n神仙感应篇\n该闻录\n朝野佥载\n神仙秘旨\n谈苑\n开元天宝遗事\n修真秘旨\n宣政录\n明皇杂录\n修真秘诀\n五行书\n北梦琐言\n左慈秘诀\n广五行记\n归田录\n登真隐诀\n遁甲书\n梦溪笔谈\n耳珠先生诀\n龙鱼河图\n野人闲话\n韩终采药诗\n论衡\n茆亭客话\n金光明经\n颜氏家训\n范子计然\n宋齐丘化书\n楚辞\n文选\n张协赋\n本事诗\n江淹集\n宋王微赞\n庾肩吾集\n陈子昂集\n陆龟蒙诗\n劝医文\n说文解字\n字林\n六书正讹\n说文本原\n字说\n六书本义\n玉篇\n唐韵\n六书精蕴\n解诂\n集韵\n古今韵会\n正韵\n韵府群玉\n续韵府群玉\n急就章\n广雅\n尔雅正义\n小尔雅\n博雅\n尔雅翼\n方言\n埤雅\n埤雅广义\n释名\n名苑\n毛诗草木鸟兽虫鱼疏\n禽经\n禽虫述\n相鹤经\n兽经\n蜂记\n贝经\n龟经\n质龟论\n果然赋\n蟹谱\n续博物志\n橘谱\n茶谱\n荔枝谱\n茶对\n感应类从志\n牡丹谱\n芍药谱\n物类相感志\n梅谱\n菊谱\n物理论\n格古论\n桐谱\n海棠记\n天玄主物簿\n菌谱\n灵芝记\n竹谱\n香谱\n平泉草木记\n洛阳花木记\n纸谱\n笔谱\n洛阳名园记\n砚谱\n墨谱\n丹砂秘诀\n云林石谱\n九鼎神丹秘诀\n玉洞要诀\n黄冶论\n升玄子伏汞图\n盐铁论\n大明一统志\n两京记\n宝货辨疑\n太平寰宇记\n方舆要览\n南方草木状\n逸周书\n水经\n临海水土记\n汲冢竹书\n续水经\n临海异物志\n左氏国语\n三辅黄图\n续汉书\n三辅故事\n法盛晋中兴书\n吴录\n荆扬异物志\n后魏书\n环氏吴纪\n凉州异物志\n南齐书\n东观秘记\n交州记\n唐会要\n世说\n桂海虞衡志\n五代史\n林邑记\n南唐书\n类编\n十洲记\n宋史\n逸史\n益州记\n辽史\n野史\n剑南方物赞\n元史\n星槎胜览\n真腊记\n吾学编\n海槎录\n出使西域记\n大明会典\n溪蛮丛话\n云南记\n太平御览\n江南别录\n永昌志\n册府元龟\n江南异闻录\n蜀地志\n集事渊海\n国史补\n华阳国志\n文献通考\n楚国先贤传\n茅山记\n白孔六帖\n西京杂记\n太和山志\n古今事类合璧\n齐东野语\n西凉记\n事文类聚\n癸辛杂志\n荆南记\n艺文类聚\n浩然斋日钞\n永州记\n通志\n志雅堂杂钞\n南裔记\n说郛\n鹤林玉露\n罗浮山疏\n北堂书钞\n辍耕录\n西湖志\n悦生随钞\n水东日记\n南郡记\n初学记\n总龟对类\n伏深齐地记\n文苑英华\n瓮天语\n郡国志\n锦绣万花谷\n诗学大成\n邺中记\n夷坚志\n苏子仇池笔记\n廉州记\n淮南万毕术\n钩玄\n三秦记\n事物纪原\n松窗杂记\n金门记\n中华古今注\n大业拾遗录\n周处风土记\n风俗通\n杜阳编\n嵩高记\n白虎通\n泊宅编\n襄沔记\n通俗文\n编年录\n南康记\n刊谬正俗\n丹铅录\n方国志\n玉烛宝典\n霏雪录\n临川记\n河图玉版\n水云录\n松漠纪闻\n河图括地象\n瑞应图记\n河湖纪闻\n春秋题辞\n心符瑞记\n武陵记\n春秋运斗枢\n夏小正\n行营杂记\n春秋元命包\n四时月令\n行程记\n春秋考异邮\n月令通纂\n北征录\n礼斗威仪\n农书\n倦游录\n孝经援神契\n山居录\n北户录\n周易通卦验\n山居四要\n胡峤陷卢记\n京房易占\n居家必用\n隋炀帝开河记\n洪范五行传\n便民图纂\n玉策记\n遁甲开山图\n多能鄙事\n述征记\n岣嵝神书\n神隐书\n述异记\n皇极经世书\n务本新书\n性理大全\n种树书\n集异记\n五经大全\n起居杂记\n异记\n通鉴纲目\n洞天保生录\n神异记\n程氏遗书\n山家清供\n李元独异志\n朱子大全\n闺阁事宜\n录异记\n老子\n事林广记\n戴祚甄异传\n冠子\n事海文山\n异闻记\n管子\n万宝事山\n志怪\n墨子\n奚囊杂纂\n续搜神记\n晏子春秋\n三洞珠囊\n洛阳伽蓝记\n董子\n陶隐居杂录\n太上玄科\n贾谊新书\n西樵野记\n太清外术\n韩诗外传\n琅琊漫钞\n俊灵机要\n说苑\n庚巳编\n地镜图\n笃论\n挥尘余话\n五雷经\n卢谌祭法\n牧竖闲谈\n雷书\n炙毂子\n两山墨谈\n干象占\n草木子\n韦航细谈\n列星图\n梁元帝金楼子\n孙升谈圃\n演禽书\n蔡邕独断\n谈薮\n吐纳经\n雅述\n爱竹谈薮\n天空经\n山堂考索\n墨客挥犀\n参同契\n容斋随笔\n围山丛话\n金丹大成\n百川学海\n退斋闲览\n许真君书\n翰墨全书\n遁斋闲览\n真诰\n文系\n负暄录\n朱真人灵验篇\n离骚辨证\n菽园杂记\n太上玄变经\n余冬录\n挥麈录\n太白经注\n慈溪日钞\n宾退录\n八草灵变篇\n类说\n避暑录\n鹤顶新书\n事类赋\n嘉话录\n三都赋\n西溪丛话\n修真指南\n遐观赋\n席上腐谈\n周颠仙碑\n钱神论\n渔隐丛话\n刘根别传\n冀越集\n法华经\n养生论\n日询手记\n涅盘经\n通微集\n仕学类钞\n圆觉经\n祛疑说\n阴德录\n楞严经\n文本指归\n翰苑丛记\n变化论\n造化权舆\n解颐新语\n自然论\n潘埙楮记室\n养漫笔\n幽明录\n稗史\n江邻几杂志\n百感录\n魏武帝集\n明道杂志\n海录碎事\n魏文帝集\n唐小说\n琐碎录\n曹子建集\n林氏小说\n治闻说\n韩语公集\n客话\n龙江录\n柳子浓文集\n刘暇日记\n灵仙录\n欧阳公文集\n昨梦录\n白獭髓\n三苏文集\n笔衡\n异说\n宛委录\n苏黄手简\n游宦纪闻\n蓼花洲闲录\n山谷刀笔\n春渚纪闻\n幕府燕闲录\n李太白集\n东坡诗集\n草庐集\n杜子美集\n黄山谷集\n渊颖集\n王维诗集\n宋徽宗诗\n铁崖集\n岑参诗集\n王元之集\n潜溪集\n钱起诗集\n梅尧臣诗集\n逊志斋集\n长庆集\n临川集\n昆山小稿\n邵尧夫集\n陈白沙集\n刘禹锡集\n周必大集\n何仲默集\n张籍诗集\n诚斋集\n张东海集\n李绅文集\n石湖集\n杨升庵集\n李义山集\n陆放翁集\n唐荆川集\n左贵嫔集\n陈止斋集\n焦希程集\n王梅溪集\n张宛丘集\n方虚谷集\n韵语阳秋\n蔡氏诗话\n古今诗话\n锦囊诗对\n礼记\n经\n道经\n范汪方\n肘后\n内经\n干宁记\n阴阳应象论\n六节脏象论\n素问·至真要大论\n"
+            "data": "《本草纲目》_历代诸家本草\n《本草纲目》_literaturelist\n《本草纲目》_采集诸家本草药品总数\n《本草纲目》_《神农本经》名例\n《本草纲目》_characteristics\n《本草纲目》_processing\n《本草纲目》_attitudes\n《本草纲目》_prescriptions\n《本草纲目》_scaledifferences\n《本草纲目》_principles\n《本草纲目》_采药分六气岁物\n《本草纲目》_七方\n《本草纲目》_十剂\n《本草纲目》_theories\n《本草纲目》_theories\n《本草纲目》_脏腑虚实标本用药式\n《本草纲目》_引经报使\n《本草纲目》_历代诸家本草_《神农本草经》\n《本草纲目》_历代诸家本草_《名医别录》\n《本草纲目》_历代诸家本草_《桐君采药录》\n《本草纲目》_历代诸家本草_《雷公药对》\n《本草纲目》_历代诸家本草_《吴氏本草》\n《本草纲目》_历代诸家本草_《唐本草》\n《本草纲目》_历代诸家本草_《药总诀》\n《本草纲目》_历代诸家本草_《药性本草》\n《本草纲目》_历代诸家本草_《食疗本草》\n《本草纲目》_历代诸家本草_《本草拾遗》\n《本草纲目》_历代诸家本草_《海药本草》\n《本草纲目》_历代诸家本草_《删繁本草》\n《本草纲目》_历代诸家本草_《食性本草》\n《本草纲目》_历代诸家本草_《蜀本草》\n《本草纲目》_历代诸家本草_《开宝本草》\n《本草纲目》_历代诸家本草_《嘉补注本草》\n《本草纲目》_历代诸家本草_《图经本草》\n《本草纲目》_历代诸家本草_《证类本草》\n《本草纲目》_历代诸家本草_《本草别说》\n《本草纲目》_历代诸家本草_《日华诸家本草》\n《本草纲目》_历代诸家本草_《洁古珍珠囊》\n《本草纲目》_历代诸家本草_《日用本草》\n《本草纲目》_历代诸家本草_《本草歌括》\n《本草纲目》_历代诸家本草_《本草衍义补遗》\n《本草纲目》_历代诸家本草_《本草发挥》\n《本草纲目》_历代诸家本草_《救荒本草》\n《本草纲目》_历代诸家本草_《庚辛玉册》\n《本草纲目》_历代诸家本草_《本草集要》\n《本草纲目》_历代诸家本草_《食物本草》\n《本草纲目》_历代诸家本草_《食鉴本草》\n《本草纲目》_历代诸家本草_《本草会编》\n《本草纲目》_历代诸家本草_《本草纲目》\n《本草纲目》_literaturelist_引据古今医家书目\n《本草纲目》_literaturelist_引据古今经史百家书目\n《本草纲目》_literaturelist_旧本所引者。\n《本草纲目》_《神农本经》名例_上中下药\n《本草纲目》_《神农本经》名例_editingnotes\n《本草纲目》_《神农本经》名例_君臣佐使\n《本草纲目》_《神农本经》名例_气味application\n《本草纲目》_《神农本经》名例_阴阳配合\n《本草纲目》_《神农本经》名例_根茎花实\n《本草纲目》_characteristics_七情\n《本草纲目》_characteristics_五味四气.\n《本草纲目》_characteristics_chronicalandacute\n《本草纲目》_processing_采造生熟\n《本草纲目》_attitudes_不治六失\n《本草纲目》_prescriptions_variety\n《本草纲目》_scaledifferences_\n《本草纲目》_principles_\n《本草纲目》_采药分六气岁物_\n《本草纲目》_七方_\n《本草纲目》_七方_大方\n《本草纲目》_七方_小方\n《本草纲目》_七方_缓方\n《本草纲目》_七方_急方\n《本草纲目》_七方_奇方\n《本草纲目》_七方_偶方\n《本草纲目》_七方_复方\n《本草纲目》_十剂_summary\n《本草纲目》_十剂_宣剂\n《本草纲目》_十剂_通剂\n《本草纲目》_十剂_补剂\n《本草纲目》_十剂_泄剂\n《本草纲目》_十剂_轻剂\n《本草纲目》_十剂_重剂\n《本草纲目》_十剂_滑剂\n《本草纲目》_十剂_涩剂\n《本草纲目》_十剂_燥剂\n《本草纲目》_十剂_湿剂\n《本草纲目》_theories_summary\n《本草纲目》_theories_故AAA\n《本草纲目》_theories_BBB\n《本草纲目》_theories_CCC\n《本草纲目》_theories_\n《本草纲目》_theories_气味阴阳\n《本草纲目》_theories_五味宜忌\n《本草纲目》_theories_五欲\n《本草纲目》_theories_五宜\n《本草纲目》_theories_五禁\n《本草纲目》_theories_seasons\n《本草纲目》_theories_\n《本草纲目》_theories_五走\n《本草纲目》_theories_五伤\n《本草纲目》_theories_五过\n《本草纲目》_theories_五味偏胜\n《本草纲目》_theories_标本阴阳\n《本草纲目》_theories_升降浮沉\n《本草纲目》_theories_顺时气而养天和\n《本草纲目》_theories_五运六淫用药式\n《本草纲目》_theories_六腑六脏用药气味补泻\n《本草纲目》_theories_五脏五味补泻\n《本草纲目》_脏腑虚实标本用药式_肝\n《本草纲目》_脏腑虚实标本用药式_心\n《本草纲目》_脏腑虚实标本用药式_脾\n《本草纲目》_脏腑虚实标本用药式_肺\n《本草纲目》_脏腑虚实标本用药式_肾\n《本草纲目》_脏腑虚实标本用药式_命门\n《本草纲目》_脏腑虚实标本用药式_三焦\n《本草纲目》_脏腑虚实标本用药式_胆\n《本草纲目》_脏腑虚实标本用药式_胃\n《本草纲目》_脏腑虚实标本用药式_大肠\n《本草纲目》_脏腑虚实标本用药式_小肠\n《本草纲目》_脏腑虚实标本用药式_膀胱\n《本草纲目》_引经报使_\n神农本草经\n名医别录\n药录\n本草\n炮炙论\n唐本草\n药性本草\n千金食治\n食疗本草\n本草拾遗\n海药本草\n四声本草\n食性本草\n蜀本草\n开宝本草\n嘉本草\n图经本草\n日华本草\n证类本草\n本草衍义\n用药法象\n本草补遗\n日用本草\n救荒本草\n食物本草\n食鉴本草\n本草会编\n本草蒙筌\n本草纲目\n神农本经\n珍珠囊\n本草经\n汉书· 艺文志\n楼护传\n七录\n神农本草\n淮南子\n汉书\n世本\n神农\n别录\n素问\n桐君采药录\n药对\n四时采药\n太常采药时月\n雷公药对\n吴氏本草\n北史\n李氏药录\n雷公炮炙论\n制伏草石论\n英公唐本草\n唐新本草\n本经\n药总诀\n药象口诀\n药性论\n脉经\n千金备急方\n千金翼方\n枕中素书\n摄生真录\n福禄论\n三教论\n老子庄子注\n周礼\n必效方\n补养方\n唐史\n南海药谱\n删繁本草\n本草音义\n本草性事类\n食经\n崔浩食经\n竺喧食经\n膳馐养疗\n食医心镜\n食治通说\n奉亲养老书\n图经\n拾遗\n嘉补注本草\n唐本\n开宝\n陈藏器本草\n雷公炮炙\n食疗\n大观本草\n政和本草\n本草别说\n日华诸家本草\n千家姓\n补注\n洁古珍珠囊\n灵\n素\n病机气宜保命集\n活法机要\n春秋\n书\n易\n，着《医学发明\n兰室秘藏\n此事难知\n汤液本草\n汤液大法\n医垒元戎\n阴证略例\n论萃英\n钱氏补遗\n本草歌括\n本草衍义补遗\n衍义\n格致余论\n局方发挥\n伤寒辨疑\n外科精要新论\n风木问答\n本草发挥\n普济方\n袖珍方\n野菜谱\n庚辛玉册\n外丹本草\n造化指南\n丹房镜源\n宝藏论\n丹台录\n太清草木方\n太清服食经\n太清丹药录\n黄白秘法\n三十六水法\n伏制草石论\n本草集要\n集要\n蒙筌\n开元广济方\n天宝单方图\n贞元广利方\n太仓公方\n太平圣惠方\n扁鹊方\n金匮玉函方\n华佗方\n伤寒论\n支太医方\n随身备急方\n徐文伯方\n古今录验方\n秦承祖方\n外台秘要方\n中藏经\n延龄至宝方\n范汪东阳方\n孙真人食忌\n孙真人枕中记\n席延赏方\n千金髓方\n叶天师枕中记\n箧中秘宝方\n箧中方\n传信方\n续传信方\n延年秘录\n救三死方\n兵部手集方\n御药院方\n纂要方\n刘涓子鬼遗方\n乘闲集效方\n短剧方\n肘后百一方\n服气精义方\n删繁方\n百病方\n孙兆口诀\n梅师集验方\n海上集验方\n深师香港脚论\n集验方\n伤寒类要\n斗门方\n独行方\n伤寒身验方\n胜金方\n药准\n简要济众方\n塞上方\n博济方\n灵苑方\n救急方\n张路大效方\n劳瘵方\n近效方\n经验方\n经验后方\n苏沈良方\n十全博救方\n必用方\n子母秘录\n产乳集验方\n产宝\n谭氏小儿方\n小儿宫气方\n万全方\n何首乌传\n普救方\n神仙服食方\n威灵仙传\n寒食散方\n牛经\n马经\n灵枢经\n玄密\n医说\n黄帝书\n褚氏遗书\n医史\n难经\n圣济总录\n病机赋\n甲乙经\n圣济经\n药性赋\n金匮要略\n服食经\n病原论\n神农食忌\n神仙服食经\n经心录\n魏武帝食制\n资生经\n饮膳正要\n原病式\n太清灵宝方\n玄明粉方\n宣明方\n脉诀刊误\n服椒诀\n本草指南\n本草权度\n证治本草\n医余录\n人参传\n炼丹药秘诀\n名医录\n艾叶传\n儒门事亲\n医学启源\n菖蒲传\n医鉴\n附子传\n洁古家珍\n医学发明\n辨惑论\n脾胃论\n东垣试效方\n医家大法\n阴证发明\n卫生宝鉴\n丹溪纂要\n丹溪医案\n丹溪心法\n丹溪心法附余\n丹溪活套\n撄宁心要\n惠民和剂局方\n三因方\n千金月令方\n济生方\n易简方\n万全护命方\n澹寮方\n是斋指迷方\n仁斋直指方\n选奇方\n杨氏家藏方\n济生拔萃方\n卫生易简方\n卫生家宝方\n本事方\n鸡峰备急方\n传家秘宝方\n养生主论\n真西山卫生歌\n九龠卫生方\n岭南方\n岭南卫生方\n养生必用方\n医学正传\n永类钤方\n医学集成\n瑞竹堂经验方\n溯洄集\n医学统旨\n积善堂经验方\n证治要诀\n医学纲目\n孙氏仁存堂经验方\n金匮钩玄\n医学指南\n杨氏颐真堂经验方\n玉机微义\n医学切问\n陆氏积德堂经验方\n医经国小\n医林集要\n德生堂经验方\n乾坤秘韫\n医林正宗\n法生堂经验方\n乾坤生意\n医方选要\n保寿堂经验方\n法天生意\n医方摘要\n总要\n医方大成\n活人心统\n奇效良方\n诸证辨疑\n集效方\n禹讲师经验方\n儒医精要\n濒湖医案\n试效录验方\n濒湖集简方\n经验济世方\n蔺氏经验方\n简便方\n试效方\n坦仙皆效方\n得效方\n居家必用方\n经验良方\n卫生杂兴\n救急易方\n张氏经验方\n杏林摘要\n急救良方\n龚氏经验方\n韩氏医通\n方外奇方\n徐氏家传方\n张三丰仙传方\n海上方\n郑氏家传方\n王氏奇方\n海上仙方\n试验方\n群书日抄\n海上名方\n包会应验方\n群书续抄\n十便良方\n孟氏诜方\n潜江切要\n怪证奇方\n生生编\n青囊杂纂\n奇疾方\n摘玄方\n济急仙方\n纂要奇方\n端效方\n惠济方\n奚囊备急方\n指南方\n百一选方\n寿域神方\n世医通变要法\n扶寿精方\n三元延寿书\n发明证治\n医方捷径\n保庆集\n保生余录\n神医普救方\n南行方\n体仁汇编\n传信适用方\n究源方\n明医杂着\n摄生妙用方\n如宜方\n济生秘览\n王氏手集\n萧静观方\n锦囊秘览\n唐仲举方\n杨尧辅方\n金匮名方\n严月轩方\n郑师甫方\n芝隐方\n通妙真人方\n三十六黄方\n十药神书\n玄感传尸论\n上清紫庭追劳方\n南阳活人书\n伤寒书\n伤寒总病论\n伤寒蕴要\n伤寒明理论\n伤寒直格\n伤寒六书\n活人书括\n妇人良方\n妇人方\n妇人良方补遗\n济阴方\n妇人明理论\n妇人千金家藏方\n便产须知\n二难宝鉴\n妇人经验方\n小儿直诀\n幼幼新书\n幼科类萃\n小儿方\n活幼心书\n袖珍小儿方\n全幼心鉴\n活幼口议\n阮氏小儿方\n婴童百问\n活幼全书\n郑氏小儿方\n婴孩宝书\n卫生总微论\n保幼大全\n鲍氏小儿方\n婴孩妙诀\n童子秘诀\n全婴方\n小儿宫气集\n博爱心鉴\n痘疹管见\n正宗\n痘疹证治\n痘疹要诀\n痘疹渊源\n痘疹论\n痘疹便览\n外科精要\n外科心法\n外科通玄论\n外科精义\n外科发挥\n外科经验方\n外科秘传\n痈疽方论\n外科集验方\n眼科龙木论\n飞鸿集\n原机启微集\n明目经验方\n宣明眼科\n眼科针钩方\n咽喉口齿方\n尔雅注疏\n尚书注疏\n春秋左传注疏\n孔子家语\n礼记注疏\n周礼注疏\n列子\n庄子\n荀子\n淮南子鸿烈解\n吕氏春秋\n抱朴子\n战国策\n史记\n后汉书\n三国志\n晋书\n宋书\n梁史\n隋书\n唐书\n轩辕本纪\n穆天子传\n秦穆公传\n蜀王本纪\n鲁定公传\n汉武故事\n汉武内传\n壶居士传\n崔魏公传\n李宝臣传\n何君谟传\n李孝伯传\n李司封传\n柳宗元传\n梁四公子记\n唐武后别传\n南岳魏夫人传\n三茅真君传\n神仙传\n搜神记\n紫灵元君传\n列仙传\n稽神录\n玄中记\n洞微志\n洞冥记\n广异记\n异苑\n拾遗记\n太平广记\n续齐谐记\n酉阳杂俎\n异术\n典术\n通典\n异类\n纂文\n博物志\n魏略\n神异经\n荆州记\n山海经\n九州记\n荆楚岁时记\n华山记\n广州记\n南州记\n嵩山记\n南州异物志\n南蛮记\n异物志\n南方异物志\n太原地志\n岭表录异\n岭南异物志\n永嘉记\n扶南记\n燕吴行纪\n南城志\n五溪记\n番禺记\n白泽图\n斗门经\n东华真人煮石法\n房室图\n太清草木记\n神仙芝草经\n异鱼图\n太清石璧记\n灵芝瑞草经\n粉图\n魏王花木志\n夏禹神仙经\n四时纂要\n齐民要术\n三洞要录\n广志\n种植书\n八帝圣化经\n古今注\n天香传\n八帝玄变经\n诗义疏\n茶经\n神仙感应篇\n该闻录\n朝野佥载\n神仙秘旨\n谈苑\n开元天宝遗事\n修真秘旨\n宣政录\n明皇杂录\n修真秘诀\n五行书\n北梦琐言\n左慈秘诀\n广五行记\n归田录\n登真隐诀\n遁甲书\n梦溪笔谈\n耳珠先生诀\n龙鱼河图\n野人闲话\n韩终采药诗\n论衡\n茆亭客话\n金光明经\n颜氏家训\n范子计然\n宋齐丘化书\n楚辞\n文选\n张协赋\n本事诗\n江淹集\n宋王微赞\n庾肩吾集\n陈子昂集\n陆龟蒙诗\n劝医文\n说文解字\n字林\n六书正讹\n说文本原\n字说\n六书本义\n玉篇\n唐韵\n六书精蕴\n解诂\n集韵\n古今韵会\n正韵\n韵府群玉\n续韵府群玉\n急就章\n广雅\n尔雅正义\n小尔雅\n博雅\n尔雅翼\n方言\n埤雅\n埤雅广义\n释名\n名苑\n毛诗草木鸟兽虫鱼疏\n禽经\n禽虫述\n相鹤经\n兽经\n蜂记\n贝经\n龟经\n质龟论\n果然赋\n蟹谱\n续博物志\n橘谱\n茶谱\n荔枝谱\n茶对\n感应类从志\n牡丹谱\n芍药谱\n物类相感志\n梅谱\n菊谱\n物理论\n格古论\n桐谱\n海棠记\n天玄主物簿\n菌谱\n灵芝记\n竹谱\n香谱\n平泉草木记\n洛阳花木记\n纸谱\n笔谱\n洛阳名园记\n砚谱\n墨谱\n丹砂秘诀\n云林石谱\n九鼎神丹秘诀\n玉洞要诀\n黄冶论\n升玄子伏汞图\n盐铁论\n大明一统志\n两京记\n宝货辨疑\n太平寰宇记\n方舆要览\n南方草木状\n逸周书\n水经\n临海水土记\n汲冢竹书\n续水经\n临海异物志\n左氏国语\n三辅黄图\n续汉书\n三辅故事\n法盛晋中兴书\n吴录\n荆扬异物志\n后魏书\n环氏吴纪\n凉州异物志\n南齐书\n东观秘记\n交州记\n唐会要\n世说\n桂海虞衡志\n五代史\n林邑记\n南唐书\n类编\n十洲记\n宋史\n逸史\n益州记\n辽史\n野史\n剑南方物赞\n元史\n星槎胜览\n真腊记\n吾学编\n海槎录\n出使西域记\n大明会典\n溪蛮丛话\n云南记\n太平御览\n江南别录\n永昌志\n册府元龟\n江南异闻录\n蜀地志\n集事渊海\n国史补\n华阳国志\n文献通考\n楚国先贤传\n茅山记\n白孔六帖\n西京杂记\n太和山志\n古今事类合璧\n齐东野语\n西凉记\n事文类聚\n癸辛杂志\n荆南记\n艺文类聚\n浩然斋日钞\n永州记\n通志\n志雅堂杂钞\n南裔记\n说郛\n鹤林玉露\n罗浮山疏\n北堂书钞\n辍耕录\n西湖志\n悦生随钞\n水东日记\n南郡记\n初学记\n总龟对类\n伏深齐地记\n文苑英华\n瓮天语\n郡国志\n锦绣万花谷\n诗学大成\n邺中记\n夷坚志\n苏子仇池笔记\n廉州记\n淮南万毕术\n钩玄\n三秦记\n事物纪原\n松窗杂记\n金门记\n中华古今注\n大业拾遗录\n周处风土记\n风俗通\n杜阳编\n嵩高记\n白虎通\n泊宅编\n襄沔记\n通俗文\n编年录\n南康记\n刊谬正俗\n丹铅录\n方国志\n玉烛宝典\n霏雪录\n临川记\n河图玉版\n水云录\n松漠纪闻\n河图括地象\n瑞应图记\n河湖纪闻\n春秋题辞\n心符瑞记\n武陵记\n春秋运斗枢\n夏小正\n行营杂记\n春秋元命包\n四时月令\n行程记\n春秋考异邮\n月令通纂\n北征录\n礼斗威仪\n农书\n倦游录\n孝经援神契\n山居录\n北户录\n周易通卦验\n山居四要\n胡峤陷卢记\n京房易占\n居家必用\n隋炀帝开河记\n洪范五行传\n便民图纂\n玉策记\n遁甲开山图\n多能鄙事\n述征记\n岣嵝神书\n神隐书\n述异记\n皇极经世书\n务本新书\n性理大全\n种树书\n集异记\n五经大全\n起居杂记\n异记\n通鉴纲目\n洞天保生录\n神异记\n程氏遗书\n山家清供\n李元独异志\n朱子大全\n闺阁事宜\n录异记\n老子\n事林广记\n戴祚甄异传\n冠子\n事海文山\n异闻记\n管子\n万宝事山\n志怪\n墨子\n奚囊杂纂\n续搜神记\n晏子春秋\n三洞珠囊\n洛阳伽蓝记\n董子\n陶隐居杂录\n太上玄科\n贾谊新书\n西樵野记\n太清外术\n韩诗外传\n琅琊漫钞\n俊灵机要\n说苑\n庚巳编\n地镜图\n笃论\n挥尘余话\n五雷经\n卢谌祭法\n牧竖闲谈\n雷书\n炙毂子\n两山墨谈\n干象占\n草木子\n韦航细谈\n列星图\n梁元帝金楼子\n孙升谈圃\n演禽书\n蔡邕独断\n谈薮\n吐纳经\n雅述\n爱竹谈薮\n天空经\n山堂考索\n墨客挥犀\n参同契\n容斋随笔\n围山丛话\n金丹大成\n百川学海\n退斋闲览\n许真君书\n翰墨全书\n遁斋闲览\n真诰\n文系\n负暄录\n朱真人灵验篇\n离骚辨证\n菽园杂记\n太上玄变经\n余冬录\n挥麈录\n太白经注\n慈溪日钞\n宾退录\n八草灵变篇\n类说\n避暑录\n鹤顶新书\n事类赋\n嘉话录\n三都赋\n西溪丛话\n修真指南\n遐观赋\n席上腐谈\n周颠仙碑\n钱神论\n渔隐丛话\n刘根别传\n冀越集\n法华经\n养生论\n日询手记\n涅盘经\n通微集\n仕学类钞\n圆觉经\n祛疑说\n阴德录\n楞严经\n文本指归\n翰苑丛记\n变化论\n造化权舆\n解颐新语\n自然论\n潘埙楮记室\n养漫笔\n幽明录\n稗史\n江邻几杂志\n百感录\n魏武帝集\n明道杂志\n海录碎事\n魏文帝集\n唐小说\n琐碎录\n曹子建集\n林氏小说\n治闻说\n韩语公集\n客话\n龙江录\n柳子浓文集\n刘暇日记\n灵仙录\n欧阳公文集\n昨梦录\n白獭髓\n三苏文集\n笔衡\n异说\n宛委录\n苏黄手简\n游宦纪闻\n蓼花洲闲录\n山谷刀笔\n春渚纪闻\n幕府燕闲录\n李太白集\n东坡诗集\n草庐集\n杜子美集\n黄山谷集\n渊颖集\n王维诗集\n宋徽宗诗\n铁崖集\n岑参诗集\n王元之集\n潜溪集\n钱起诗集\n梅尧臣诗集\n逊志斋集\n长庆集\n临川集\n昆山小稿\n邵尧夫集\n陈白沙集\n刘禹锡集\n周必大集\n何仲默集\n张籍诗集\n诚斋集\n张东海集\n李绅文集\n石湖集\n杨升庵集\n李义山集\n陆放翁集\n唐荆川集\n左贵嫔集\n陈止斋集\n焦希程集\n王梅溪集\n张宛丘集\n方虚谷集\n韵语阳秋\n蔡氏诗话\n古今诗话\n锦囊诗对\n礼记\n经\n道经\n范汪方\n肘后\n内经\n干宁记\n阴阳应象论\n六节脏象论\n素问·至真要大论\n"
           }
         ]
       },
@@ -40,15 +40,15 @@
       "jobName": "paragraph_1603753840014_1578998021",
       "id": "paragraph_1603753840014_1578998021",
       "dateCreated": "2020-10-26 16:10:40.014",
-      "dateStarted": "2020-12-07 14:05:03.913",
-      "dateFinished": "2020-12-07 14:05:15.456",
+      "dateStarted": "2020-12-11 16:17:25.867",
+      "dateFinished": "2020-12-11 16:17:26.467",
       "status": "FINISHED"
     },
     {
       "title": "x Author\u0026Title",
       "text": "import psycopg2\nimport psycopg2.extras\nimport nltk\nfrom nltk.tokenize import regexp_tokenize\nimport re\n\nfrom elasticsearch import Elasticsearch\n\nes \u003d Elasticsearch([\"localhost\"], port\u003d9200)\n\ndef saveES(id, src, ent, content):\n    body \u003d {\n      \u0027name\u0027: ent,\n#      \u0027aname\u0027: [\u0027test1\u0027, \u0027joy1\u0027, \u0027fun1\u0027],\n      \u0027source\u0027: src, \n      \u0027content\u0027: content,\n      \u0027tags\u0027: [\u0027literature\u0027,\u0027author\u0027]\n    }\n#    print(body)\n    es.index(index\u003d\u0027infobot\u0027, doc_type\u003d\u0027v1\u0027, id\u003did, body\u003dbody)\n    \nAuthBooks \u003d []\n\ndef splitToAuthAndTitle(str):\n    authors \u003d \u0027\u0027\n    titles \u003d \u0027\u0027\n    \n    #print(str)\n    #str \u003d u\u0027胡洽居士《百病方》 《孙兆口诀》 《梅师集验方》\u0027\n    m \u003d re.finditer(u\u0027^([^《]*?)(《.*》$)\u0027,str)\n    tmpLst \u003d list(m)\n    matchCnt \u003d len(tmpLst)\n    #print(matchCnt)\n    if matchCnt \u003e 0 :    \n        for i in tmpLst:\n            authors \u003d i.group(1)\n            titles \u003d i.group(2)\n        return authors, titles\n\n    #str \u003d u\u0027《兰室秘藏》 《东垣试效方》王海藏\u0027\n    m \u003d re.finditer(u\u0027^(《.*》)([^》]*$)\u0027,str)\n    tmpLst \u003d list(m)\n    matchCnt \u003d len(tmpLst)\n    #print(matchCnt)\n    if matchCnt \u003e 0 :    \n        for i in tmpLst:\n            authors \u003d i.group(2)\n            titles \u003d i.group(1)\n        return authors, titles\n        \n    return None        \n\n\nconn \u003d psycopg2.connect(database\u003d\"notes\", user\u003d\"postgres\", password\u003d\"post\", host\u003d\"127.0.0.1\", port\u003d\"5432\")\n\n#cur \u003d conn.cursor()\ncur \u003d conn.cursor(cursor_factory\u003dpsycopg2.extras.DictCursor)\nsql \u003d \"\"\"select * from infobot\n        where id like %s\"\"\"\n\ncur.execute(sql, (\"《本草纲目》_04_002_001%\",))\nrows \u003d cur.fetchall()\nfor x in rows:\n    print(x[\u0027title\u0027])\n    #print(x[\u0027content\u0027])\n    ##### 01  #######\n    #str \u003d u\u0027胡洽居士《百病方》 《孙兆口诀》 《梅师集验方》\u0027\n    #str \u003d u\u0027《兰室秘藏》 《东垣试效方》王海藏\u0027\n    #str \u003d u\u0027《溯洄集》叶氏\u0027\n    #temp \u003d splitToAuthAndTitle(str)\n    #print(x[\u0027content\u0027])\n    lines \u003d x[\u0027content\u0027].splitlines()\n    for l in lines:\n        temp \u003d splitToAuthAndTitle(l)\n        if temp:\n            #print(temp[0])\n            c \u003d regexp_tokenize(temp[1], u\"《(.*?)》\")\n            #print(c)\n            for book_name in c:\n                print(temp[0], book_name)\n                #AuthBooks.append((temp[0], i))\n                saveES(x[\"id\"]+book_name, x[\"id\"], book_name, temp[0])\n    #author \u003d regexp_tokenize(x[\u0027content\u0027], u\"》([^《]*?)$\")\n    #books \u003d regexp_tokenize(x[\u0027content\u0027], u\"《(.*?)》\")\n\n#for i in AuthBooks:\n#    print(i)\n#    print(author)\n#    print(books)\n\ncur.close()\nconn.close()",
       "user": "anonymous",
-      "dateUpdated": "2020-12-07 14:34:13.208",
+      "dateUpdated": "2020-12-11 16:18:00.733",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -84,8 +84,8 @@
       "jobName": "paragraph_1603928627201_522193004",
       "id": "paragraph_1603928627201_522193004",
       "dateCreated": "2020-10-28 16:43:47.202",
-      "dateStarted": "2020-12-07 14:34:13.248",
-      "dateFinished": "2020-12-07 14:34:18.043",
+      "dateStarted": "2020-12-11 16:17:49.790",
+      "dateFinished": "2020-12-11 16:17:50.136",
       "status": "FINISHED"
     },
     {
@@ -134,9 +134,9 @@
     },
     {
       "title": "x 阴阳配合",
-      "text": "import psycopg2\nimport psycopg2.extras\nimport nltk\nfrom nltk.tokenize import regexp_tokenize\nimport re\n\nfrom neo4j import GraphDatabase\n\nuri \u003d \"bolt://localhost:7687\"\n\ndef save_neo4j(tx, ent1, tag1, rel, ent2, tag2):\n    print(rel)\n    cql \u003d \"\"\"\n    merge (en1:Entity{name: $en1, tag:$tg1})\n    merge (en2:Entity{name: $en2, tag:$tg2})\n    merge (en1)-[r:WHAT{id: $rel}]-\u003e(en2)\n    \"\"\"\n    result \u003d tx.run(cql, en1\u003dent1,tg1\u003dtag1, rel\u003drel, en2\u003dent2, tg2\u003dtag2)\n    return result\n\nrelations \u003d []\n\ndef parseRelations(str):\n    itemA \u003d \u0027\u0027\n    rel1 \u003d \u0027\u0027\n    itemB \u003d \u0027\u0027\n    rel2 \u003d \u0027\u0027\n    itemC \u003d \u0027\u0027\n    extra \u003d \u0027\u0027\n    #print(str)\n    driver \u003d GraphDatabase.driver(uri, auth\u003d(\"neo4j\", \"lisa\"))\n    neo4jSess \u003d driver.session()\n    #空青法木，故色青而主肝。\n    m \u003d re.finditer(\u0027^(.*)法(.*)，故色(.*)而主(.*)[；。]\u0027,str)\n    tmpLst \u003d list(m)\n    matchCnt \u003d len(tmpLst)\n    #print(matchCnt)\n    if matchCnt \u003e 0 :    \n        for i in tmpLst:\n            itemA \u003d i.group(1)\n            rel1 \u003d \u0027法\u0027\n            itemB \u003d i.group(2)\n            rel2 \u003d \u0027色\u0027\n            itemC \u003d i.group(3)\n            itemD \u003d i.group(4)\n            neo4jSess.write_transaction(save_neo4j, itemA,\u0027herb\u0027, rel1, itemB,\u0027行\u0027)    \n            neo4jSess.write_transaction(save_neo4j, itemD,\u0027脏\u0027, rel1, itemB,\u0027行\u0027)    \n            neo4jSess.write_transaction(save_neo4j, itemA,\u0027herb\u0027, rel2, itemC,\u0027色\u0027)    \n            print(itemA, rel1, itemB, rel2, itemC, itemD)\n\n#    neo4jSess.close()\n#    driver.close()\n    return None        \n\n\nconn \u003d psycopg2.connect(database\u003d\"notes\", user\u003d\"postgres\", password\u003d\"post\", host\u003d\"127.0.0.1\", port\u003d\"5432\")\n\n#cur \u003d conn.cursor()\ncur \u003d conn.cursor(cursor_factory\u003dpsycopg2.extras.DictCursor)\nsql \u003d \"\"\"select * from infobot\n        where title like %s\"\"\"\n\ncur.execute(sql, (\"%阴阳配合%\",))\nrows \u003d cur.fetchall()\nfor x in rows:\n    print(x[\u0027title\u0027])\n\n    lines \u003d x[\u0027content\u0027].splitlines()\n    for l in lines:\n        temp \u003d parseRelations(l)\n        #if temp:\n        #    relations.append(temp)\n\n    #author \u003d regexp_tokenize(x[\u0027content\u0027], u\"》([^《]*?)$\")\n    #books \u003d regexp_tokenize(x[\u0027content\u0027], u\"《(.*?)》\")\n\n#for i in relations:\n#    print(i)\n#    print(author)\n#    print(books)\n\ncur.close()\nconn.close()",
+      "text": "import psycopg2\nimport psycopg2.extras\nimport nltk\nfrom nltk.tokenize import regexp_tokenize\nimport re\n\nfrom neo4j import GraphDatabase\n\nuri \u003d \"bolt://localhost:7687\"\n\ndef save_neo4j(tx, ent1, tag1, rel, ent2, tag2):\n    print(rel)\n\n    cql \u003d \"\"\"\n    merge (en1:Entity{name: $en1, tag:$tg1})\n    merge (en2:Entity{name: $en2, tag:$tg2})\n    merge (en1)-[r:WHAT{id: $rel}]-\u003e(en2)\n    \"\"\"\n    result \u003d tx.run(cql, en1\u003dent1,tg1\u003dtag1, rel\u003drel, en2\u003dent2, tg2\u003dtag2)\n\n    return result\n\nrelations \u003d []\n\ndef parseRelations(str):\n    itemA \u003d \u0027\u0027\n    rel1 \u003d \u0027\u0027\n    itemB \u003d \u0027\u0027\n    rel2 \u003d \u0027\u0027\n    itemC \u003d \u0027\u0027\n    extra \u003d \u0027\u0027\n    driver \u003d GraphDatabase.driver(uri, auth\u003d(\"neo4j\", \"lisa\"))\n    neo4jSess \u003d driver.session()\n    #print(str)\n    #空青法木，故色青而主肝。\n    m \u003d re.finditer(\u0027^(.*)法(.*)，故色(.*)而主(.*)[；。]\u0027,str)\n    tmpLst \u003d list(m)\n    matchCnt \u003d len(tmpLst)\n    #print(matchCnt)\n    if matchCnt \u003e 0 :    \n        for i in tmpLst:\n            itemA \u003d i.group(1)\n            rel1 \u003d \u0027法\u0027\n            itemB \u003d i.group(2)\n            rel2 \u003d \u0027色\u0027\n            itemC \u003d i.group(3)\n            itemD \u003d i.group(4)\n            neo4jSess.write_transaction(save_neo4j, itemA,\u0027herb\u0027, rel1, itemB,\u0027行\u0027)    \n            neo4jSess.write_transaction(save_neo4j, itemD,\u0027脏\u0027, rel1, itemB,\u0027行\u0027)    \n            neo4jSess.write_transaction(save_neo4j, itemA,\u0027herb\u0027, rel2, itemC,\u0027色\u0027)    \n            print(itemA, rel1, itemB, rel2, itemC, itemD)\n\n    neo4jSess.close()\n    driver.close()\n    return None        \n\n\nconn \u003d psycopg2.connect(database\u003d\"notes\", user\u003d\"postgres\", password\u003d\"post\", host\u003d\"127.0.0.1\", port\u003d\"5432\")\n\n#cur \u003d conn.cursor()\ncur \u003d conn.cursor(cursor_factory\u003dpsycopg2.extras.DictCursor)\nsql \u003d \"\"\"select * from infobot\n        where title like %s\"\"\"\n\ncur.execute(sql, (\"%阴阳配合%\",))\nrows \u003d cur.fetchall()\nfor x in rows:\n    print(x[\u0027title\u0027])\n\n    lines \u003d x[\u0027content\u0027].splitlines()\n    for l in lines:\n        temp \u003d parseRelations(l)\n        #if temp:\n        #    relations.append(temp)\n\n    #author \u003d regexp_tokenize(x[\u0027content\u0027], u\"》([^《]*?)$\")\n    #books \u003d regexp_tokenize(x[\u0027content\u0027], u\"《(.*?)》\")\n\n#for i in relations:\n#    print(i)\n#    print(author)\n#    print(books)\n\ncur.close()\nconn.close()",
       "user": "anonymous",
-      "dateUpdated": "2020-12-08 20:54:04.632",
+      "dateUpdated": "2020-12-11 16:30:57.869",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -157,13 +157,24 @@
         "params": {},
         "forms": {}
       },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "《本草纲目》_《神农本经》名例_阴阳配合\n法\n法\n色\n空青 法 木 色 青 肝\n法\n法\n色\n丹砂 法 火 色 赤 心\n法\n法\n色\n云母 法 金 色 白 肺\n法\n法\n色\n雌黄 法 土 色 黄 脾\n法\n法\n色\n磁石 法 水 色 黑 肾\n"
+          }
+        ]
+      },
       "apps": [],
       "runtimeInfos": {},
       "progressUpdateIntervalMs": 500,
       "jobName": "paragraph_1607489644596_1147935222",
       "id": "paragraph_1607489644596_1147935222",
       "dateCreated": "2020-12-08 20:54:04.597",
-      "status": "READY"
+      "dateStarted": "2020-12-11 16:30:57.942",
+      "dateFinished": "2020-12-11 16:30:59.896",
+      "status": "FINISHED"
     },
     {
       "title": "x Definitions",
@@ -210,10 +221,10 @@
       "status": "FINISHED"
     },
     {
-      "title": "x Relations",
-      "text": "import psycopg2\nimport psycopg2.extras\nimport nltk\nfrom nltk.tokenize import regexp_tokenize\nimport re\n\nfrom neo4j import GraphDatabase\n\nuri \u003d \"bolt://localhost:7687\"\n\ndef save_neo4j(tx, ent1, rel, ent2):\n    print(rel)\n    cql \u003d \"\"\"\n    merge (en1:Entity{name: $en1, cat:\"x\"})\n    merge (en2:Entity{name: $en2, cat:\"y\"})\n    merge (en1)-[r:COMPATILE{id: $rel, tag: \u0027xx\u0027}]-\u003e(en2)\n    \"\"\"\n    result \u003d tx.run(cql, en1\u003dent1, rel\u003drel, en2\u003dent2)\n    return result\n\nrelations \u003d []\n\ndef parseRelations(str):\n    itemA \u003d \u0027\u0027\n    rel \u003d \u0027\u0027\n    itemB \u003d \u0027\u0027\n    extra \u003d \u0027\u0027\n    #print(str)\n    driver \u003d GraphDatabase.driver(uri, auth\u003d(\"neo4j\", \"lisa\"))\n    neo4jSess \u003d driver.session() \n    m \u003d re.finditer(u\u0027^(.{1,2})([生欲宜禁走伤胜])([^者^之]?)，(.*)$\u0027,str)\n    tmpLst \u003d list(m)\n    matchCnt \u003d len(tmpLst)\n    #print(matchCnt)\n    if matchCnt \u003e 0 :    \n        for i in tmpLst:\n            itemA \u003d i.group(1)\n            rel \u003d i.group(2)\n            itemB \u003d i.group(3)\n            extra \u003d i.group(4)\n            neo4jSess.write_transaction(save_neo4j, itemA, rel, itemB)    \n            print(itemA, rel, itemB, extra)\n    neo4jSess.close()\n    driver.close()\n    return None        \n\n\nconn \u003d psycopg2.connect(database\u003d\"notes\", user\u003d\"postgres\", password\u003d\"post\", host\u003d\"127.0.0.1\", port\u003d\"5432\")\n\n#cur \u003d conn.cursor()\ncur \u003d conn.cursor(cursor_factory\u003dpsycopg2.extras.DictCursor)\nsql \u003d \"\"\"select * from infobot\n        where id like %s\"\"\"\n\ncur.execute(sql, (\"《本草纲目》_04_015%\",))\nrows \u003d cur.fetchall()\nfor x in rows:\n    print(x[\u0027title\u0027])\n\n    lines \u003d x[\u0027content\u0027].splitlines()\n    for l in lines:\n        temp \u003d parseRelations(l)\n        #if temp:\n        #    relations.append(temp)\n\n    #author \u003d regexp_tokenize(x[\u0027content\u0027], u\"》([^《]*?)$\")\n    #books \u003d regexp_tokenize(x[\u0027content\u0027], u\"《(.*?)》\")\n\n#for i in relations:\n#    print(i)\n#    print(author)\n#    print(books)\n\ncur.close()\nconn.close()",
+      "title": "x 五味宜忌,五欲,五宜",
+      "text": "import psycopg2\nimport psycopg2.extras\nimport nltk\nfrom nltk.tokenize import regexp_tokenize\nimport re\n\nfrom neo4j import GraphDatabase\n\nuri \u003d \"bolt://localhost:7687\"\n\ndef save_neo4j(tx, ent1, tag1, rel, ent2, tag2):\n    print(rel)\n\n    cql \u003d \"\"\"\n    merge (en1:Entity{name: $en1, tag:$tg1})\n    merge (en2:Entity{name: $en2, tag:$tg2})\n    merge (en1)-[r:WHAT{id: $rel}]-\u003e(en2)\n    \"\"\"\n    result \u003d tx.run(cql, en1\u003dent1,tg1\u003dtag1, rel\u003drel, en2\u003dent2, tg2\u003dtag2)\n\n    return result\n    \nrelations \u003d []\n\ndef parseRelations(str):\n    itemA \u003d \u0027\u0027\n    rel1 \u003d \u0027\u0027\n    itemB \u003d \u0027\u0027\n    rel2 \u003d \u0027\u0027\n    itemC \u003d \u0027\u0027\n    extra \u003d \u0027\u0027\n    #print(str)\n    driver \u003d GraphDatabase.driver(uri, auth\u003d(\"neo4j\", \"lisa\"))\n    neo4jSess \u003d driver.session()\n    #水生咸。\n    #辛i散，\n    #青色宜酸，\n    #肝病宜食麻、犬、李、韭。\n    m \u003d re.finditer(\u0027^(.*)(欲|生|is|色宜|宜食)(.*)\u0027,str)\n    tmpLst \u003d list(m)\n    matchCnt \u003d len(tmpLst)\n    #print(matchCnt)\n    if matchCnt \u003e 0 :    \n        for i in tmpLst:\n            itemA \u003d i.group(1)\n            rel \u003d  i.group(2)\n            itemB \u003d i.group(3)\n            if (rel\u003d\u003d\u0027生\u0027):\n                print(\u0027xx\u0027)\n                neo4jSess.write_transaction(save_neo4j, itemA,\u0027行\u0027, rel2, itemB,\u0027味\u0027)\n            if (rel\u003d\u003d\u0027is\u0027):\n                print(\u0027is\u0027)\n                neo4jSess.write_transaction(save_neo4j, itemA,\u0027味\u0027, rel2, itemB,\u0027effect\u0027)\n            if (rel\u003d\u003d\u0027欲\u0027):\n                print(\u0027欲\u0027)\n                neo4jSess.write_transaction(save_neo4j, itemA,\u0027脏\u0027, rel2, itemB,\u0027味\u0027)\n            if (rel\u003d\u003d\u0027色宜\u0027):\n                print(\u0027色宜\u0027)\n                neo4jSess.write_transaction(save_neo4j, itemA,\u0027色\u0027, \u0027宜\u0027, itemB,\u0027味\u0027)\n            if (rel\u003d\u003d\u0027宜食\u0027):\n                print(\u0027宜食\u0027)\n                neo4jSess.write_transaction(save_neo4j, itemA,\u0027脏\u0027, \u0027宜\u0027, itemB,\u0027味\u0027)\n            print(itemA, rel, itemB)\n\n#    neo4jSess.close()\n#    driver.close()\n    return None        \n\n\nconn \u003d psycopg2.connect(database\u003d\"notes\", user\u003d\"postgres\", password\u003d\"post\", host\u003d\"127.0.0.1\", port\u003d\"5432\")\n\n#cur \u003d conn.cursor()\ncur \u003d conn.cursor(cursor_factory\u003dpsycopg2.extras.DictCursor)\nsql \u003d \"\"\"select * from infobot\n        where title like \u0027%五味宜忌%\u0027 \n           or title like \u0027%五欲%\u0027 \n           or title like \u0027%五宜%\u0027 \"\"\"\n\ncur.execute(sql)\nrows \u003d cur.fetchall()\nfor x in rows:\n    print(x[\u0027title\u0027])\n\n    lines \u003d x[\u0027content\u0027].splitlines()\n    for l in lines:\n        temp \u003d parseRelations(l)\n        #if temp:\n        #    relations.append(temp)\n\n    #author \u003d regexp_tokenize(x[\u0027content\u0027], u\"》([^《]*?)$\")\n    #books \u003d regexp_tokenize(x[\u0027content\u0027], u\"《(.*?)》\")\n\n#for i in relations:\n#    print(i)\n#    print(author)\n#    print(books)\n\ncur.close()\nconn.close()",
       "user": "anonymous",
-      "dateUpdated": "2020-12-03 17:12:04.513",
+      "dateUpdated": "2020-12-11 18:19:54.918",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -239,7 +250,95 @@
         "msg": [
           {
             "type": "TEXT",
-            "data": "《本草纲目》_grandsummary\n《本草纲目》_grandsummary_\n长齿 生 牙 赖雄鼠之骨末（其齿若年多不生者，取雄鼠脊骨，作末，揩折处，齿立生如故）。\n《本草纲目》_grandsummary_气味阴阳\n《本草纲目》_grandsummary_五味宜忌\n木 生 酸 火生苦，土生甘，金生辛，水生咸。\n《本草纲目》_grandsummary_五欲\n肝 欲 酸 \n心 欲 苦 \n脾 欲 甘 \n肺 欲 辛 \n肾 欲 咸 \n《本草纲目》_grandsummary_五宜\n青色 宜 酸 肝病宜食麻、犬、李、韭。\n赤色 宜 苦 心病宜食麦、羊、杏、薤。\n黄色 宜 甘 脾病宜食粳、牛、枣、葵。\n白色 宜 辛 肺病宜食黄黍、鸡、桃、葱。\n黑色 宜 咸 肾病宜食大豆黄卷、猪、栗、藿。\n《本草纲目》_grandsummary_五禁\n肝病 禁 辛 宜食甘∶粳、牛、枣、葵。\n心病 禁 咸 宜食酸∶麻、犬、李、韭。\n脾病 禁 酸 宜食咸∶大豆、豕、栗、藿。\n肺病 禁 苦 宜食苦∶麦、羊、杏、薤。\n肾病 禁 甘 宜食辛∶黄黍、鸡、桃、葱。\n《本草纲目》_grandsummary_seasons\n《本草纲目》_grandsummary_\n《本草纲目》_grandsummary_五走\n酸 走 筋 筋病毋多食酸，多食令人癃。酸气涩收，胞得酸而缩卷，故水道不通也。\n苦 走 骨 骨病毋多食苦，多食令人变呕。苦入下脘，三焦皆闭，故变呕也。\n甘 走 肉 肉病毋多食甘，多食令人心。甘气柔润，胃柔则缓，缓则虫动，故心也。\n辛 走 气 气病毋多食辛，多食令人洞心。辛走上焦，与气俱行，久留心下，故洞心也。\n咸 走 血 血病毋多食咸，多食令人渴。血与咸相得则凝，凝则胃汁注之，故咽路焦而舌本干。\n《本草纲目》_grandsummary_五伤\n酸 伤 筋 辛胜酸。\n苦 伤 气 咸胜苦。\n甘 伤 肉 酸胜甘。\n咸 伤 血 甘胜咸。\n《本草纲目》_grandsummary_五过\n《本草纲目》_grandsummary_五味偏胜\n《本草纲目》_grandsummary_标本阴阳\n《本草纲目》_grandsummary_升降浮沉\n《本草纲目》_grandsummary_顺时气而养天和\n《本草纲目》_grandsummary_五运六淫用药式\n《本草纲目》_grandsummary_六腑六脏用药气味补泻\n《本草纲目》_grandsummary_五脏五味补泻\n"
+            "data": "《本草纲目》_theories_五味宜忌\nxx\n\n木 生 酸，\nxx\n\n火 生 苦，\nxx\n\n土 生 甘，\nxx\n\n金 生 辛，\nxx\n\n水 生 咸。\nis\n\n辛 is 散，\nis\n\n酸 is 收，\nis\n\n甘 is 缓，\nis\n\n苦 is 坚，\nis\n\n咸 is 软。\nxx\n\n又曰∶阴之所 生 ，本在五味；阴之五宫，伤在五味。骨正筋柔，气血以流，腠理以密，骨气以精，长有天命。\n《本草纲目》_theories_五欲\n欲\n\n肝 欲 酸，\n欲\n\n心 欲 苦，\n欲\n\n脾 欲 甘，\n欲\n\n肺 欲 辛，\n欲\n\n肾 欲 咸，\n《本草纲目》_theories_五宜\n色宜\n宜\n青 色宜 酸，\n宜食\n宜\n肝病 宜食 麻、犬、李、韭。\n色宜\n宜\n赤 色宜 苦，\n宜食\n宜\n心病 宜食 麦、羊、杏、薤。\n色宜\n宜\n黄 色宜 甘，\n宜食\n宜\n脾病 宜食 粳、牛、枣、葵。\n色宜\n宜\n白 色宜 辛，\n宜食\n宜\n肺病 宜食 黄黍、鸡、桃、葱。\n色宜\n宜\n黑 色宜 咸，\n宜食\n宜\n肾病 宜食 大豆黄卷、猪、栗、藿。\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1607487323325_1070707455",
+      "id": "paragraph_1607487323325_1070707455",
+      "dateCreated": "2020-12-08 20:15:23.325",
+      "dateStarted": "2020-12-11 18:19:54.928",
+      "dateFinished": "2020-12-11 18:19:55.743",
+      "status": "FINISHED"
+    },
+    {
+      "title": "x 五禁",
+      "text": "import psycopg2\nimport psycopg2.extras\nimport nltk\nfrom nltk.tokenize import regexp_tokenize\nimport re\n\nfrom neo4j import GraphDatabase\n\nfrom elasticsearch import Elasticsearch\n\nes \u003d Elasticsearch([\"localhost\"], port\u003d9200)\n\ndef save_es(i, s, t, c):\n    body \u003d {\n      \u0027name\u0027: t,\n#      \u0027aname\u0027: [\u0027test1\u0027, \u0027joy1\u0027, \u0027fun1\u0027],\n      \u0027source\u0027: s, \n      \u0027content\u0027: c,\n      \u0027tags\u0027: [\u0027list-of\u0027]\n    }\n#    print(body)\n    es.index(index\u003d\u0027infobot\u0027, doc_type\u003d\u0027v1\u0027, id\u003di, body\u003dbody)\n    \n\nuri \u003d \"bolt://localhost:7687\"\n\ndef save_neo4j(tx, ent1, rel, ent2, extra\u003d\u0027\u0027):\n    print(rel)\n    cql \u003d \"\"\"\n    merge (en1:Entity{name: $en1, cat:\"illness\"})\n    merge (en2:Entity{name: $en2, cat:\"smell\"})\n    merge (en1)-[r:WHAT{id: $rel}]-\u003e(en2)  \n    \"\"\"\n    result \u003d tx.run(cql, en1\u003dent1, rel\u003drel, en2\u003dent2, ex\u003dextra)\n    return result\n\nrelations \u003d []\n\ndef parseRelations(src, str):\n    itemA \u003d \u0027\u0027\n    rel1 \u003d \u0027\u0027\n    itemB \u003d \u0027\u0027\n    rel2 \u003d \u0027\u0027\n    itemC \u003d \u0027\u0027\n    extra \u003d \u0027\u0027\n    #print(str)\n    driver \u003d GraphDatabase.driver(uri, auth\u003d(\"neo4j\", \"lisa\"))\n    neo4jSess \u003d driver.session()\n    #肝病禁辛，宜食甘∶粳、牛、枣、葵。\n    m \u003d re.finditer(\u0027^(.*)禁(.*)，宜食(.*)∶(.*)。\u0027,str)\n    tmpLst \u003d list(m)\n    matchCnt \u003d len(tmpLst)\n    #print(matchCnt)\n    if matchCnt \u003e 0 :    \n        for i in tmpLst:\n            itemA \u003d i.group(1)\n            rel1 \u003d \u0027禁\u0027\n            itemB \u003d i.group(2)\n            rel2 \u003d \u0027宜\u0027\n            itemC \u003d i.group(3)\n            examples \u003d i.group(4)\n            neo4jSess.write_transaction(save_neo4j, itemA, rel1, itemB)    \n            neo4jSess.write_transaction(save_neo4j, itemA, rel2, itemC)\n            examples \u003d re.split(\u0027、|。\u0027, examples)\n            if examples:\n                print(examples)\n                save_es(src+itemC, src, itemC, examples)\n            print(itemA, rel1, itemB, rel2, itemC, extra)\n\n#    neo4jSess.close()\n#    driver.close()\n    return None        \n\n\nconn \u003d psycopg2.connect(database\u003d\"notes\", user\u003d\"postgres\", password\u003d\"post\", host\u003d\"127.0.0.1\", port\u003d\"5432\")\n\n#cur \u003d conn.cursor()\ncur \u003d conn.cursor(cursor_factory\u003dpsycopg2.extras.DictCursor)\nsql \u003d \"\"\"select * from infobot\n        where title like %s\"\"\"\n\ncur.execute(sql, (\"%五禁%\",))\nrows \u003d cur.fetchall()\nfor x in rows:\n    print(x[\u0027title\u0027])\n\n    lines \u003d x[\u0027content\u0027].splitlines()\n    for l in lines:\n        temp \u003d parseRelations(x[\u0027title\u0027], l)\n        #if temp:\n        #    relations.append(temp)\n\n    #author \u003d regexp_tokenize(x[\u0027content\u0027], u\"》([^《]*?)$\")\n    #books \u003d regexp_tokenize(x[\u0027content\u0027], u\"《(.*?)》\")\n\n#for i in relations:\n#    print(i)\n#    print(author)\n#    print(books)\n\ncur.close()\nconn.close()",
+      "user": "anonymous",
+      "dateUpdated": "2020-12-15 16:45:38.983",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/python",
+        "title": true,
+        "lineNumbers": true,
+        "tableHide": false,
+        "editorHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "《本草纲目》_theories_五禁\n禁\n宜\n[\u0027粳\u0027, \u0027牛\u0027, \u0027枣\u0027, \u0027葵\u0027]\n肝病 禁 辛 宜 甘 \n禁\n宜\n[\u0027麻\u0027, \u0027犬\u0027, \u0027李\u0027, \u0027韭\u0027]\n心病 禁 咸 宜 酸 \n禁\n宜\n[\u0027大豆\u0027, \u0027豕\u0027, \u0027栗\u0027, \u0027藿\u0027]\n脾病 禁 酸 宜 咸 \n禁\n宜\n[\u0027麦\u0027, \u0027羊\u0027, \u0027杏\u0027, \u0027薤\u0027]\n肺病 禁 苦 宜 苦 \n禁\n宜\n[\u0027黄黍\u0027, \u0027鸡\u0027, \u0027桃\u0027, \u0027葱\u0027]\n肾病 禁 甘 宜 辛 \n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1607654926819_60588524",
+      "id": "paragraph_1607654926819_60588524",
+      "dateCreated": "2020-12-10 18:48:46.820",
+      "dateStarted": "2020-12-15 16:45:38.995",
+      "dateFinished": "2020-12-15 16:45:40.732",
+      "status": "FINISHED"
+    },
+    {
+      "title": "x 五走",
+      "text": "import psycopg2\nimport psycopg2.extras\nimport nltk\nfrom nltk.tokenize import regexp_tokenize\nimport re\n\nfrom neo4j import GraphDatabase\n\nuri \u003d \"bolt://localhost:7687\"\n\ndef save_neo4j(tx, ent1, cat1, rel, ex, ent2, cat2):\n    print(rel)\n    cql \u003d \"\"\"\n    merge (en1:Entity{name: $en1, cat:$cat1})\n    merge (en2:Entity{name: $en2, cat:$cat2})\n    merge (en1)-[r:走{expound: $ex}]-\u003e(en2)\n    \"\"\"\n    result \u003d tx.run(cql, en1\u003dent1,cat1\u003dcat1, rel\u003drel, ex\u003dex, en2\u003dent2,cat2\u003dcat2)\n    return result\n\nrelations \u003d []\n\ndef parseRelations(str):\n    itemA \u003d \u0027\u0027\n    rel \u003d \u0027\u0027\n    itemB \u003d \u0027\u0027\n    extra \u003d \u0027\u0027\n    #print(str)\n    driver \u003d GraphDatabase.driver(uri, auth\u003d(\"neo4j\", \"lisa\"))\n    neo4jSess \u003d driver.session() \n    m \u003d re.finditer(\u0027^(.)(走)(.)，(.*)。\u0027,str)\n    tmpLst \u003d list(m)\n    matchCnt \u003d len(tmpLst)\n    #print(matchCnt)\n    if matchCnt \u003e 0 :    \n        for i in tmpLst:\n            itemA \u003d i.group(1)\n            rel \u003d i.group(2)\n            itemB \u003d i.group(3)\n            ex \u003d i.group(4)\n            neo4jSess.write_transaction(save_neo4j, itemA, \"味\", rel, ex, itemB, \"component\")    \n            print(itemA, rel, itemB, extra)\n    neo4jSess.close()\n    driver.close()\n    return None        \n\n\nconn \u003d psycopg2.connect(database\u003d\"notes\", user\u003d\"postgres\", password\u003d\"post\", host\u003d\"127.0.0.1\", port\u003d\"5432\")\n\n#cur \u003d conn.cursor()\ncur \u003d conn.cursor(cursor_factory\u003dpsycopg2.extras.DictCursor)\nsql \u003d \"\"\"select * from infobot\n        where title like \u0027%五走\u0027\"\"\"\n\ncur.execute(sql)\nrows \u003d cur.fetchall()\nfor x in rows:\n    print(x[\u0027title\u0027])\n\n    lines \u003d x[\u0027content\u0027].splitlines()\n    for l in lines:\n        temp \u003d parseRelations(l)\n\ncur.close()\nconn.close()",
+      "user": "anonymous",
+      "dateUpdated": "2020-12-16 17:47:12.357",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/python",
+        "title": true,
+        "lineNumbers": true,
+        "tableHide": false,
+        "editorHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "《本草纲目》_theories_五走\n走\n酸 走 筋 \n走\n苦 走 骨 \n走\n甘 走 肉 \n走\n辛 走 气 \n走\n咸 走 血 \n"
           }
         ]
       },
@@ -249,81 +348,15 @@
       "jobName": "paragraph_1604013264699_1250861519",
       "id": "paragraph_1604013264699_1250861519",
       "dateCreated": "2020-10-29 16:14:24.699",
-      "dateStarted": "2020-12-02 19:40:47.122",
-      "dateFinished": "2020-12-02 19:40:47.182",
+      "dateStarted": "2020-12-16 17:47:12.439",
+      "dateFinished": "2020-12-16 17:47:13.868",
       "status": "FINISHED"
     },
     {
-      "title": "x 五禁",
-      "text": "import psycopg2\nimport psycopg2.extras\nimport nltk\nfrom nltk.tokenize import regexp_tokenize\nimport re\n\nfrom neo4j import GraphDatabase\n\nuri \u003d \"bolt://localhost:7687\"\n\ndef save_neo4j(tx, ent1, rel, ent2, extra):\n    print(rel)\n    cql \u003d \"\"\"\n    merge (en1:Entity{name: $en1, cat:\"illness\"})\n    merge (en2:Entity{name: $en2, cat:\"smell\"})\n    merge (en1)-[r:WHAT{id: $rel, tag: $ex}]-\u003e(en2)\n    \"\"\"\n    result \u003d tx.run(cql, en1\u003dent1, rel\u003drel, en2\u003dent2, ex\u003dextra)\n    return result\n\nrelations \u003d []\n\ndef parseRelations(str):\n    itemA \u003d \u0027\u0027\n    rel1 \u003d \u0027\u0027\n    itemB \u003d \u0027\u0027\n    rel2 \u003d \u0027\u0027\n    itemC \u003d \u0027\u0027\n    extra \u003d \u0027\u0027\n    #print(str)\n    driver \u003d GraphDatabase.driver(uri, auth\u003d(\"neo4j\", \"lisa\"))\n    neo4jSess \u003d driver.session()\n    #肝病禁辛，宜食甘∶粳、牛、枣、葵。\n    m \u003d re.finditer(\u0027^(.*)禁(.*)，宜食(.*)∶(.*)。\u0027,str)\n    tmpLst \u003d list(m)\n    matchCnt \u003d len(tmpLst)\n    #print(matchCnt)\n    if matchCnt \u003e 0 :    \n        for i in tmpLst:\n            itemA \u003d i.group(1)\n            rel1 \u003d \u0027禁\u0027\n            itemB \u003d i.group(2)\n            rel2 \u003d \u0027宜\u0027\n            itemC \u003d i.group(3)\n            extra \u003d i.group(4)\n            neo4jSess.write_transaction(save_neo4j, itemA, rel1, itemB, \u0027\u0027)    \n            neo4jSess.write_transaction(save_neo4j, itemA, rel2, itemC, extra)    \n            print(itemA, rel1, itemB, rel2, itemC, extra)\n\n#    neo4jSess.close()\n#    driver.close()\n    return None        \n\n\nconn \u003d psycopg2.connect(database\u003d\"notes\", user\u003d\"postgres\", password\u003d\"post\", host\u003d\"127.0.0.1\", port\u003d\"5432\")\n\n#cur \u003d conn.cursor()\ncur \u003d conn.cursor(cursor_factory\u003dpsycopg2.extras.DictCursor)\nsql \u003d \"\"\"select * from infobot\n        where title like %s\"\"\"\n\ncur.execute(sql, (\"%五禁%\",))\nrows \u003d cur.fetchall()\nfor x in rows:\n    print(x[\u0027title\u0027])\n\n    lines \u003d x[\u0027content\u0027].splitlines()\n    for l in lines:\n        temp \u003d parseRelations(l)\n        #if temp:\n        #    relations.append(temp)\n\n    #author \u003d regexp_tokenize(x[\u0027content\u0027], u\"》([^《]*?)$\")\n    #books \u003d regexp_tokenize(x[\u0027content\u0027], u\"《(.*?)》\")\n\n#for i in relations:\n#    print(i)\n#    print(author)\n#    print(books)\n\ncur.close()\nconn.close()",
+      "title": "x 五伤",
+      "text": "import psycopg2\nimport psycopg2.extras\nimport nltk\nfrom nltk.tokenize import regexp_tokenize\nimport re\n\nfrom neo4j import GraphDatabase\n\nuri \u003d \"bolt://localhost:7687\"\n\ndef save_neo4j(tx, ent1, cat1, rel, ex, ent2, cat2):\n    print(rel)\n    cql \u003d \"\"\"\n    merge (en1:Entity{name: $en1, cat:$cat1})\n    merge (en2:Entity{name: $en2, cat:$cat2})\n    merge (en1)-[r:伤{expound: $ex}]-\u003e(en2)\n    \"\"\"\n    result \u003d tx.run(cql, en1\u003dent1,cat1\u003dcat1, rel\u003drel, ex\u003dex, en2\u003dent2,cat2\u003dcat2)\n    return result\n\nrelations \u003d []\n\ndef parseRelations(str):\n    itemA \u003d \u0027\u0027\n    rel \u003d \u0027\u0027\n    itemB \u003d \u0027\u0027\n    extra \u003d \u0027\u0027\n    #print(str)\n    driver \u003d GraphDatabase.driver(uri, auth\u003d(\"neo4j\", \"lisa\"))\n    neo4jSess \u003d driver.session() \n    m \u003d re.finditer(u\u0027^(.)伤(.)\u0027,str)\n    tmpLst \u003d list(m)\n    matchCnt \u003d len(tmpLst)\n    #print(matchCnt)\n    if matchCnt \u003e 0 :    \n        for i in tmpLst:\n            itemA \u003d i.group(1)\n            rel \u003d \u0027伤\u0027\n            itemB \u003d i.group(2)\n            neo4jSess.write_transaction(save_neo4j, itemA, \u0027味\u0027, rel, \u0027\u0027, itemB, \u0027body\u0027)    \n            print(itemA, rel, itemB)\n    neo4jSess.close()\n    driver.close()\n    return None        \n\n\nconn \u003d psycopg2.connect(database\u003d\"notes\", user\u003d\"postgres\", password\u003d\"post\", host\u003d\"127.0.0.1\", port\u003d\"5432\")\n\n#cur \u003d conn.cursor()\ncur \u003d conn.cursor(cursor_factory\u003dpsycopg2.extras.DictCursor)\nsql \u003d \"\"\"select * from infobot\n        where title like \u0027%五伤%\u0027\"\"\"\n\ncur.execute(sql)\nrows \u003d cur.fetchall()\nfor x in rows:\n    print(x[\u0027title\u0027])\n\n    lines \u003d x[\u0027content\u0027].splitlines()\n    for l in lines:\n        temp \u003d parseRelations(l)\n        #if temp:\n        #    relations.append(temp)\n\n    #author \u003d regexp_tokenize(x[\u0027content\u0027], u\"》([^《]*?)$\")\n    #books \u003d regexp_tokenize(x[\u0027content\u0027], u\"《(.*?)》\")\n\n#for i in relations:\n#    print(i)\n#    print(author)\n#    print(books)\n\ncur.close()\nconn.close()",
       "user": "anonymous",
-      "dateUpdated": "2020-12-08 20:15:23.348",
-      "config": {
-        "colWidth": 12.0,
-        "fontSize": 9.0,
-        "enabled": true,
-        "results": {},
-        "editorSetting": {
-          "language": "python",
-          "editOnDblClick": false,
-          "completionSupport": true
-        },
-        "editorMode": "ace/mode/python",
-        "title": true,
-        "lineNumbers": true,
-        "tableHide": false,
-        "editorHide": false
-      },
-      "settings": {
-        "params": {},
-        "forms": {}
-      },
-      "apps": [],
-      "runtimeInfos": {},
-      "progressUpdateIntervalMs": 500,
-      "jobName": "paragraph_1607487323325_1070707455",
-      "id": "paragraph_1607487323325_1070707455",
-      "dateCreated": "2020-12-08 20:15:23.325",
-      "status": "READY"
-    },
-    {
-      "title": "x 五味偏胜",
-      "text": "import psycopg2\nimport psycopg2.extras\nimport nltk\nfrom nltk.tokenize import regexp_tokenize\nimport re\n\nfrom neo4j import GraphDatabase\n\nuri \u003d \"bolt://localhost:7687\"\n\ndef save_neo4j(tx, ent1, rel, ent2):\n    print(rel)\n    cql \u003d \"\"\"\n    merge (en1:Entity{name: $en1, cat:\"x\"})\n    merge (en2:Entity{name: $en2, cat:\"y\"})\n    merge (en1)-[r:EFFECT{id: $rel, tag: \u0027xx\u0027}]-\u003e(en2)\n    \"\"\"\n    result \u003d tx.run(cql, en1\u003dent1, rel\u003drel, en2\u003dent2)\n    return result\n\nrelations \u003d []\n\ndef parseRelations(str):\n    itemA \u003d \u0027\u0027\n    rel \u003d \u0027\u0027\n    itemB \u003d \u0027\u0027\n    extra \u003d \u0027\u0027\n    #print(str)\n    driver \u003d GraphDatabase.driver(uri, auth\u003d(\"neo4j\", \"lisa\"))\n    neo4jSess \u003d driver.session() \n    m \u003d re.finditer(u\u0027^(.*)先入(.*)[，。]\u0027,str)\n    tmpLst \u003d list(m)\n    matchCnt \u003d len(tmpLst)\n    #print(matchCnt)\n    if matchCnt \u003e 0 :    \n        for i in tmpLst:\n            itemA \u003d i.group(1)\n            rel \u003d i.group(2)\n            itemB \u003d i.group(3)\n            extra \u003d i.group(4)\n            neo4jSess.write_transaction(save_neo4j, itemA, rel, itemB)    \n            print(itemA, rel, itemB, extra)\n\n    m \u003d re.finditer(u\u0027入(.*)为(.*)[，。]\u0027,str)\n    tmpLst \u003d list(m)\n    matchCnt \u003d len(tmpLst)\n    #print(matchCnt)\n    if matchCnt \u003e 0 :    \n        for i in tmpLst:\n            itemA \u003d i.group(1)\n            rel \u003d i.group(2)\n            itemB \u003d i.group(3)\n            extra \u003d i.group(4)\n            neo4jSess.write_transaction(save_neo4j, itemA, rel, itemB)    \n            print(itemA, rel, itemB, extra)\n    \n    neo4jSess.close()\n    driver.close()\n    return None        \n\n\nconn \u003d psycopg2.connect(database\u003d\"notes\", user\u003d\"postgres\", password\u003d\"post\", host\u003d\"127.0.0.1\", port\u003d\"5432\")\n\n#cur \u003d conn.cursor()\ncur \u003d conn.cursor(cursor_factory\u003dpsycopg2.extras.DictCursor)\nsql \u003d \"\"\"select * from infobot\n        where id title %s\"\"\"\n\ncur.execute(sql, (\"%五味偏胜%\",))\nrows \u003d cur.fetchall()\nfor x in rows:\n    print(x[\u0027title\u0027])\n\n    lines \u003d x[\u0027content\u0027].splitlines()\n    for l in lines:\n        temp \u003d parseRelations(l)\n        #if temp:\n        #    relations.append(temp)\n\n    #author \u003d regexp_tokenize(x[\u0027content\u0027], u\"》([^《]*?)$\")\n    #books \u003d regexp_tokenize(x[\u0027content\u0027], u\"《(.*?)》\")\n\n#for i in relations:\n#    print(i)\n#    print(author)\n#    print(books)\n\ncur.close()\nconn.close()",
-      "user": "anonymous",
-      "dateUpdated": "2020-12-07 17:35:53.563",
-      "config": {
-        "colWidth": 12.0,
-        "fontSize": 9.0,
-        "enabled": true,
-        "results": {},
-        "editorSetting": {
-          "language": "python",
-          "editOnDblClick": false,
-          "completionSupport": true
-        },
-        "editorMode": "ace/mode/python",
-        "title": true,
-        "lineNumbers": true,
-        "tableHide": false,
-        "editorHide": false
-      },
-      "settings": {
-        "params": {},
-        "forms": {}
-      },
-      "apps": [],
-      "runtimeInfos": {},
-      "progressUpdateIntervalMs": 500,
-      "jobName": "paragraph_1607391353554_409152740",
-      "id": "paragraph_1607391353554_409152740",
-      "dateCreated": "2020-12-07 17:35:53.554",
-      "status": "READY"
-    },
-    {
-      "title": "x Body SubSystems",
-      "text": "import psycopg2\nimport psycopg2.extras\nimport nltk\nfrom nltk.tokenize import regexp_tokenize\nimport re\n\nsubSystems \u003d []\n\ndef parseSubSystem(str):\n    #print(str)\n    #m \u003d re.finditer(u\u0027^(.*)(本病.*)(标病.*)\u003cl(.*)l\u003e\u0027, str, re.MULTILINE)\n    m \u003d re.finditer(u\u0027^(.*)(本病.*)(标病.*)\u003cl(.*)l\u003e\u0027, str, re.DOTALL)\n    tmpLst \u003d list(m)\n    matchCnt \u003d len(tmpLst)\n    #print(matchCnt)\n    for i in tmpLst:\n        return [i.group(1), i.group(2), i.group(3), i.group(4)]\n\n\nconn \u003d psycopg2.connect(database\u003d\"notes\", user\u003d\"postgres\", password\u003d\"post\", host\u003d\"127.0.0.1\", port\u003d\"5432\")\n\n#cur \u003d conn.cursor()\ncur \u003d conn.cursor(cursor_factory\u003dpsycopg2.extras.DictCursor)\nsql \u003d \"\"\"select * from infobot\n        where id like %s order by id\"\"\"\n\ncur.execute(sql, (\"《本草纲目》_04_016%\",))\nrows \u003d cur.fetchall()\nfor x in rows:\n    name \u003d re.sub(u\u0027《本草纲目》.*_\u0027, \u0027\u0027, x[\u0027title\u0027])\n    #print(name)\n    temp \u003d parseSubSystem(x[\u0027content\u0027])\n    #print(temp)\n    if temp:\n        subSystems.append((name,temp))\n\n    #author \u003d regexp_tokenize(x[\u0027content\u0027], u\"》([^《]*?)$\")\n    #books \u003d regexp_tokenize(x[\u0027content\u0027], u\"《(.*?)》\")\n\nfor i in subSystems:\n    print(i[0])\n    print(i[1][0])\n    print(i[1][1])\n    print(i[1][2])\n    print(i[1][3])\n#    print(author)\n#    print(books)\n\ncur.close()\nconn.close()",
-      "user": "anonymous",
-      "dateUpdated": "2020-12-02 19:41:17.019",
+      "dateUpdated": "2020-12-16 20:01:01.847",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -349,7 +382,216 @@
         "msg": [
           {
             "type": "TEXT",
-            "data": "肝\n藏魂，属木。胆火寄于中。 主血，主目，主筋，主呼，主怒。\n\n本病∶诸风眩晕，僵仆强直，惊痫，两胁肿痛，胸肋满痛，呕血，小腹疝痛瘕，女人经病。\n\n标病∶寒热疟，头痛吐涎，目赤面青，多怒，耳闭颊肿，筋挛卵缩，丈夫疝，女人少腹肿痛、阴病。\n\n\n有余泻之:泻子甘草行气（香附, 芎瞿麦, 牵牛, 青橘皮）\n - 行血;（红花鳖, 甲桃仁, 莪术, 京三棱, 穿山甲, 大黄, 水蛭, 虻虫, 苏木, 牡丹皮）\n - 镇惊;（雄黄, 金箔, 铁落, 真珠, 代赭石, 夜明砂, 胡粉, 银箔, 铅丹, 龙骨, 石决明）\n - 搜风;（羌活, 荆芥, 薄荷, 槐子, 蔓荆子, 白花蛇, 独活, 防风, 皂荚, 乌头, 白附子, 僵蚕, 蝉蜕）\n不足补之:补母（枸杞, 杜仲, 狗脊, 熟地黄, 苦参, 萆阿胶, 菟丝子）;\n -  补血（当归, 牛膝, 续断, 白芍药, 血竭, 没药, 芎）\n - 补气;（天麻, 柏子仁, 白术, 菊花, 细辛, 密蒙花, 决明谷, 精草, 生姜）\n本热寒之: 泻木（芍药, 乌梅, 泽泻）; 泻火（黄连, 龙胆, 草黄, 芩苦茶, 猪胆）; \n - 攻里（大黄）\n标热发之: 和解（柴胡, 半夏）; 解肌（桂枝, 麻黄）;\n\n心\n藏神，为君火。包络为相火，代君行令。 主血，主言，主汗，主笑。\n\n本病∶诸热瞀螈，惊惑谵妄烦乱，啼笑骂詈，怔忡健忘，自汗，诸痛痒疮疡。\n\n标病∶肌热畏寒战栗，舌不能言，面赤目黄，手心烦热，胸胁满痛，引腰背、肩胛、肘臂。\n\n\n火实泻之:泻子（黄连,大黄）,\n - 气（甘草,人参,赤茯苓,木通,黄柏）,\n - 血（丹参,牡丹,生地黄,玄参）,\n - 镇惊（朱砂,牛黄,紫石英）\n神虚补之:补母（细辛,乌梅,酸枣仁,生姜,陈皮）,\n - 气（桂心,泽泻,白茯苓,茯神,远志,石菖蒲）,\n - 血（当归,乳香,熟地黄,没药）\n本热寒之: 泻火（黄芩,竹叶,麦门冬,芒硝,炒盐）,\n - 凉血（地黄,栀子,天竺黄）\n标热发之:散火（甘草,独活,麻黄,柴胡,龙脑）\n\n脾\n藏意，属土，为万物之母。 主营卫，主味，主肌肉，主四肢。\n\n本病∶诸湿肿胀，痞满噫气，大小便闭，黄胆痰饮，吐泻霍乱，心腹痛，饮食不化。\n\n标病∶身体肿，重困嗜卧，四肢不举，舌本强痛，足大趾不用，九窍不通，诸痉项强。\n\n\n土实泻之:泻子（诃子,防风,桑白皮,葶苈）,\n - 吐（豆豉,栀子,萝卜子,常山,瓜蒂,郁金齑汁,藜芦苦参,赤小豆,盐汤,苦茶）,\n - 下（大黄,芒硝,青礞石,大戟,甘遂,续随子,芫花）\n土虚补之: 补母（桂心,茯苓）,\n - 气（人参,黄升,麻葛根,甘草,陈橘皮,藿香,葳蕤,缩砂,仁木香,扁豆）,\n - 血（白术,苍术,白芍药,胶饴,大枣,干姜,木瓜,乌梅,蜂蜜）\n本湿除之:燥中宫（白术,苍术,橘皮,半夏,吴茱萸,南星草,豆蔻,白芥子）,洁净府（木通,赤茯苓,猪苓,藿香）\n标湿渗之:开鬼门（葛根,苍术,麻黄,独活）\n\n肺\n藏魄，属金，总摄一身元气。 主闻，主哭，主皮毛。\n\n本病∶ 诸气郁，诸痿喘呕，气短，咳嗽上逆，咳唾脓血，不得卧，小不禁。\n\n标病∶洒淅寒热，伤风自汗，肩背痛冷，臂前廉痛。\n\n\n气实泻之:泻子（泽泻,葶苈,桑白皮,地骨皮）,\n - 除湿（半夏,白矾,白茯苓,薏苡仁,木瓜,橘皮）,\n - 泻火（粳米,石膏,寒水石,知母,诃子）,\n - 通滞（枳壳,薄荷,干生姜,木香,浓朴,杏仁,皂荚,桔梗,紫苏梗）\n气虚补之: 补母（甘草,人参,升麻,黄山药）,\n - 润燥（蛤蚧,阿胶,麦门冬,贝母,百合,天花粉,天门冬）,\n - 敛肺（乌梅,粟壳,五味子,芍药,五倍子）\n本热清之:清金（黄芩,知母,麦门冬,栀子,沙参,紫菀,天门冬）\n本寒温之:温肺（丁香,藿香,款冬花,檀香,白豆蔻,益智,缩砂,糯米,百部）\n标寒散之:解表（麻黄,葱白,紫苏）\n\n肾\n藏志，属水，为天一之源。 主听，主骨，主二阴。\n\n本病∶诸寒厥逆，骨痿腰痛，腰冷如冰，足肿寒，少腹满急疝瘕，大便闭泄，吐利腥秽\n\n标病∶发热不恶热，头眩头痛，咽痛舌燥，脊股后廉痛。\n\n\n水强泻之:泻子（大戟,牵牛）,\n - 泻腑（泽泻,猪苓,车前子,防己,茯苓）\n水弱补之: 补母（人参,山药）,\n - 气（知母,玄参,补骨脂,砂仁,苦参）,\n - 血（黄柏,枸杞,熟地黄,锁阳肉,苁蓉山,茱萸,阿胶,五味子）\n本热攻之:下（伤寒少阴证，口燥咽干，大承气汤。）, 寒温之 温里,（附子,干姜,官桂,蜀椒,白术）\n标寒解之: 解表（麻黄,细辛,独活,桂枝）\n标热凉之: 清热（玄参,连翘,甘草,猪肤）\n\n命门\n为相火之原，天地之始，藏精生血，降则为漏，升则为铅， 主三焦元气。\n\n本病∶ 前后癃闭，气逆里急，疝痛奔豚，消渴膏淋，精漏精寒，赤白浊，溺血，崩中带漏。\n\n标病∶\n\n\n火强泻之:泻相火（黄柏, 知母, 牡丹皮, 地骨皮, 生地黄, 茯苓, 玄参, 寒水石）\n火弱补之:益阳（附子, 肉桂, 益智子, 破故纸, 沉香, 川乌头,硫黄,天雄,乌药,阳起石,舶,茴香,胡桃,巴戟,天丹砂,当归,蛤蚧,覆盆）\n精脱固之: 涩滑（牡蛎,芡实,金樱子,五味子,远志,山茱萸,蛤粉）\n\n三焦\n为相火之用，分布命门元气，主升降出入，游行天地之间，总领五脏六腑营卫经络内外上下左右之气，号中清之府。 上主纳，中主化，下主出。\n\n本病∶ 诸热瞀螈，暴病暴死暴喑，躁扰狂越，谵妄惊骇，诸血溢血泄，诸气逆冲上，诸疮疡痘疹瘤核。 上热则喘满，诸呕吐酸，胸痞胁痛，食饮不消，头上出汗。 中热则善饥而瘦，解中满，诸胀腹大，诸病有声，鼓之如鼓，上下关格不通，霍乱吐利。 下热则暴注下迫，水液混浊，下部肿满，小便淋沥或不通，大便闭结下痢。 上寒则吐饮食痰水，胸痹，前后引痛，食已还出。 中寒则饮食不化，寒胀，反胃吐水，湿泻不渴。 下寒则二便不禁，脐腹冷，疝痛。\n\n标病∶恶寒战栗，如丧神守，耳鸣耳聋，嗌肿喉痹，诸病肿不用。\n\n\n实火泻之: 汗（麻黄,柴胡,葛根,荆芥,升麻,薄荷,羌活,石膏）,\n - 吐（瓜蒂,沧盐,齑汁）,\n - 下（大黄,芒硝）\n虚火补之:上（人参,天雄,桂心）,\n - 中（人参,黄丁,香木,香草果）,\n - 下（附子,桂心,硫黄,人参,沉香,乌药,破故纸）\n本热寒之:上（黄芩,连翘,栀子,知母,玄参,石膏,生地黄）,\n - 中（黄连,连翘,生地,石膏）,\n - 下（黄柏,知母,生地,石膏,牡丹,地骨皮）\n标热散之:解表（柴胡,细辛,荆芥,羌活,葛根,石膏）\n\n胆\n属木，为少阳相火，发生万物，为决断之官，十一脏之主 （主同肝）。(主血，主目，主筋，主呼，主怒。)\n\n本病∶口苦，呕苦汁，善太息，澹澹如人将捕状，目昏不眠。\n\n标病∶寒热往来，疟，胸胁痛，头额痛，耳痛鸣聋，瘰结核\n\n\n实火泻之:泻胆（龙胆,牛膝,猪胆,生蕤,仁生,酸枣仁,黄连,苦茶）\n虚火补之:温胆（人参,细辛,半夏,炒蕤仁,炒酸枣仁,当归,地黄）\n本热平之:降火（黄芩,黄连,芍药,连翘,甘草）,镇惊（黑铅,水银）\n标热和之: 和解（柴胡,芍药,黄芩,半夏,甘草）\n\n胃\n属土，主容受，为水谷之海。 （主同脾）。(主营卫，主味，主肌肉，主四肢。)\n\n本病∶噎膈反胃，中满肿胀，呕吐泻痢，霍乱腹痛，消中善饥，不消食，伤饮食，胃管当心痛，支两胁。\n\n标病∶发热蒸蒸，身前热，身前寒，发狂谵语，咽痹，上齿痛，口眼斜，鼻痛鼽衄赤。\n\n\n胃实泻之:湿热（大黄,芒硝）饮食,（巴豆,神曲,山楂,阿魏砂,郁金,三棱轻粉）\n胃虚补之:湿热（苍术,白术,半夏,茯苓,橘皮,生姜）,寒湿（干姜,附子草,果官,桂,丁香,肉豆蔻,人参,黄）\n本热寒之:降火（石膏,地黄,犀角,黄连）\n标热解之:解肌（升麻,葛根,豆豉）\n\n大肠\n属金， 主变化，为传送之官。\n\n本病∶大便闭结，泄痢下血，里急后重，疽痔脱肛，肠鸣而痛。\n\n标病∶齿痛喉痹，颈肿口干，咽中如核，鼽衄目黄，手大指次指痛，宿食发热寒栗。\n\n\n肠实泻之:热（大黄,芒硝,桃花,牵牛,巴豆,郁李仁,石膏）,\n - 气（枳壳,木香,橘皮,槟榔）\n肠虚补之:气（皂荚）燥（桃仁,麻仁,杏仁,地黄,乳香,松子,当归肉,苁蓉）\n - 湿（白术,苍术,半夏,硫磺）,陷（升麻,葛根）,脱（龙骨,白垩,诃子,粟壳,乌梅,白矾,赤石脂,禹余粮,石榴皮）\n本热寒之:清热（秦艽,槐角,地黄,黄芩）\n本寒温之:温里（干姜,附子,肉豆蔻）\n标热散之:解肌（石膏,白芷,升麻,葛根）\n\n小肠\n主分泌水谷，为受盛之官。\n\n本病∶大便水谷利，小便短，小便闭，小便血，小便自利，大便后血，小肠气痛，宿食夜热旦止。\n\n标病∶身热恶寒，嗌痛颔肿，口糜耳聋。\n\n\n实热泻之:气（木通,猪苓,滑石,瞿麦泽,泻灯草）,血（地黄,蒲黄,赤茯苓,栀子,牡丹皮）\n虚寒补之:气（白术,楝实,茴香,砂仁,神曲,扁豆）,血（桂心,延胡索）\n本热寒之:降火（黄柏,黄芩,黄连,连翘,栀子）\n标热散之:解肌（本羌活,防风,蔓荆）\n\n膀胱\n主津液，为胞之府，气化乃能出，号州都之官，诸病皆干之。\n\n本病∶小便淋沥，或短数，或黄赤，或白，或遗失，或气痛。\n\n标病∶发热恶寒，头痛，腰脊强，鼻窒，足小指不用。\n\n\n实热泻之:泄火（滑石,猪苓,泽泻,茯苓）\n下虚补之:热（黄柏知母）,寒（桔梗,升麻,益智,乌药,山茱萸）\n本热利之:降火（地黄,栀子,茵陈,黄柏,牡丹皮,地骨皮）\n标寒发之:发表（麻黄,桂枝,羌活,苍术,防己,黄木贼）\n\n"
+            "data": "《本草纲目》_theories\n《本草纲目》_theories_\n《本草纲目》_theories_气味阴阳\n《本草纲目》_theories_五味宜忌\n《本草纲目》_theories_五欲\n《本草纲目》_theories_五宜\n《本草纲目》_theories_五禁\n《本草纲目》_theories_seasons\n《本草纲目》_theories_\n《本草纲目》_theories_五走\n《本草纲目》_theories_五伤\n伤\n酸 伤 筋\n伤\n苦 伤 气\n伤\n甘 伤 肉\n伤\n辛 伤 皮\n伤\n咸 伤 血\n《本草纲目》_theories_五过\n《本草纲目》_theories_五味偏胜\n《本草纲目》_theories_标本阴阳\n《本草纲目》_theories_升降浮沉\n《本草纲目》_theories_顺时气而养天和\n《本草纲目》_theories_五运六淫用药式\n《本草纲目》_theories_六腑六脏用药气味补泻\n《本草纲目》_theories_五脏五味补泻\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1608093207743_1329790749",
+      "id": "paragraph_1608093207743_1329790749",
+      "dateCreated": "2020-12-15 20:33:27.743",
+      "dateStarted": "2020-12-16 19:57:12.107",
+      "dateFinished": "2020-12-16 19:57:20.508",
+      "status": "FINISHED"
+    },
+    {
+      "title": "x 五味偏胜",
+      "text": "import psycopg2\nimport psycopg2.extras\nimport nltk\nfrom nltk.tokenize import regexp_tokenize\nimport re\n\nfrom neo4j import GraphDatabase\n\nuri \u003d \"bolt://localhost:7687\"\n\ndef save_neo4j(tx, ent1, cat1, rel, ex, ent2, cat2):\n    print(rel)\n    cql \u003d \"\"\"\n    merge (en1:Entity{name: $en1, cat:$cat1})\n    merge (en2:Entity{name: $en2, cat:$cat2})\n    merge (en1)-[r:入{expound: $ex}]-\u003e(en2)\n    \"\"\"\n    result \u003d tx.run(cql, en1\u003dent1,cat1\u003dcat1, rel\u003drel, ex\u003dex, en2\u003dent2,cat2\u003dcat2)\n    return result\n\n\nrelations \u003d []\n\ndef parseRelations(str):\n    itemA \u003d \u0027\u0027\n    rel \u003d \u0027\u0027\n    itemB \u003d \u0027\u0027\n    extra \u003d \u0027\u0027\n    #print(str)\n    driver \u003d GraphDatabase.driver(uri, auth\u003d(\"neo4j\", \"lisa\"))\n    neo4jSess \u003d driver.session() \n    m \u003d re.finditer(u\u0027^(.*)先入(.*)[，。]\u0027,str)\n    tmpLst \u003d list(m)\n    matchCnt \u003d len(tmpLst)\n    #print(matchCnt)\n    if matchCnt \u003e 0 :    \n        for i in tmpLst:\n            itemA \u003d i.group(1)\n            itemB \u003d i.group(2)\n            neo4jSess.write_transaction(save_neo4j, itemA, \u0027味\u0027, \u0027入\u0027, \u0027enter\u0027, itemB,\u0027脏\u0027)    \n            print(itemA, rel, itemB, extra)\n\n    m \u003d re.finditer(u\u0027入(.*)为(.*)[，。]\u0027,str)\n    tmpLst \u003d list(m)\n    matchCnt \u003d len(tmpLst)\n    #print(matchCnt)\n    if matchCnt \u003e 0 :    \n        for i in tmpLst:\n            itemA \u003d i.group(1)\n            itemB \u003d i.group(2)\n            neo4jSess.write_transaction(save_neo4j, itemB, \u0027气\u0027, \u0027入\u0027, \u0027enter\u0027, itemA, \u0027脏\u0027)    \n            print(itemA, rel, itemB, extra)\n    \n    neo4jSess.close()\n    driver.close()\n    return None        \n\n\nconn \u003d psycopg2.connect(database\u003d\"notes\", user\u003d\"postgres\", password\u003d\"post\", host\u003d\"127.0.0.1\", port\u003d\"5432\")\n\n#cur \u003d conn.cursor()\ncur \u003d conn.cursor(cursor_factory\u003dpsycopg2.extras.DictCursor)\nsql \u003d \"\"\"select * from infobot\n        where title like \u0027%五味偏胜%\u0027\"\"\"\n\ncur.execute(sql)\nrows \u003d cur.fetchall()\nfor x in rows:\n    print(x[\u0027title\u0027])\n\n    lines \u003d x[\u0027content\u0027].splitlines()\n    for l in lines:\n        temp \u003d parseRelations(l)\n        #if temp:\n        #    relations.append(temp)\n\n    #author \u003d regexp_tokenize(x[\u0027content\u0027], u\"》([^《]*?)$\")\n    #books \u003d regexp_tokenize(x[\u0027content\u0027], u\"《(.*?)》\")\n\n#for i in relations:\n#    print(i)\n#    print(author)\n#    print(books)\n\ncur.close()\nconn.close()",
+      "user": "anonymous",
+      "dateUpdated": "2020-12-16 20:19:38.316",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/python",
+        "title": true,
+        "lineNumbers": true,
+        "tableHide": false,
+        "editorHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "《本草纲目》_theories_五味偏胜\n入\n酸  肝 \n入\n苦  心 \n入\n甘  脾 \n入\n辛  肺 \n入\n咸  肾 \n入\n肝  温 \n入\n心  热 \n入\n肺  清 \n入\n肾  寒 \n入\n脾  至阴而四气兼之 \n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1607391353554_409152740",
+      "id": "paragraph_1607391353554_409152740",
+      "dateCreated": "2020-12-07 17:35:53.554",
+      "dateStarted": "2020-12-16 20:19:38.349",
+      "dateFinished": "2020-12-16 20:19:38.899",
+      "status": "FINISHED"
+    },
+    {
+      "title": "x 气味补泻",
+      "text": "import psycopg2\nimport psycopg2.extras\nimport nltk\nfrom nltk.tokenize import regexp_tokenize\nimport re\n\nfrom neo4j import GraphDatabase\n\nuri \u003d \"bolt://localhost:7687\"\n\ndef save_neo4j(tx, ent1, cat1, rel,ent2, cat2):\n    print(rel)\n    cql \u003d \"\"\"\n    merge (en1:Entity{name: $en1, cat:$cat1})\n    merge (en2:Entity{name: $en2, cat:$cat2})\n    merge (en1)-[r:补泻{name: $rel}]-\u003e(en2)\n    \"\"\"\n    result \u003d tx.run(cql, en1\u003dent1,cat1\u003dcat1, rel\u003drel, en2\u003dent2,cat2\u003dcat2)\n    return result\n\n\ndef parseLine(str):\n    itemA \u003d \u0027\u0027\n    rel \u003d \u0027\u0027\n    itemB \u003d \u0027\u0027\n    extra \u003d \u0027\u0027\n    #print(str)\n    driver \u003d GraphDatabase.driver(uri, auth\u003d(\"neo4j\", \"lisa\"))\n    neo4jSess \u003d driver.session() \n    m \u003d re.finditer(u\u0027^(.*)（(.*)。）\u0027,str)\n    tmpLst \u003d list(m)\n    matchCnt \u003d len(tmpLst)\n    #print(matchCnt)\n    if matchCnt \u003e 0 :    \n        for i in tmpLst:\n            print(i.group(1), i.group(2))\n            a \u003d re.split(\u0027、|（|$\u0027 , i.group(1))\n            for j in a:\n                if(re.search(\u0027）\u0027, j) is None):\n                    print(j)\n                    print(i.group(2))\n                    b \u003d re.findall(\u0027(.)(补|泻)\u0027, i.group(2))\n                    for k in b:\n                        print(j, k[0], k[1])\n                        neo4jSess.write_transaction(save_neo4j, k[0], \u0027气味\u0027, k[1], j,\u0027脏\u0027)    \n\n\n    neo4jSess.close()\n    driver.close()\n    return None        \n\n\nconn \u003d psycopg2.connect(database\u003d\"notes\", user\u003d\"postgres\", password\u003d\"post\", host\u003d\"127.0.0.1\", port\u003d\"5432\")\n\n#cur \u003d conn.cursor()\ncur \u003d conn.cursor(cursor_factory\u003dpsycopg2.extras.DictCursor)\nsql \u003d \"\"\"select * from infobot\n        where title like \u0027%气味补泻%\u0027\"\"\"\n\ncur.execute(sql)\nrows \u003d cur.fetchall()\nfor x in rows:\n    print(x[\u0027title\u0027])\n\n    lines \u003d x[\u0027content\u0027].splitlines()\n    for l in lines:\n        temp \u003d parseLine(l)\n\ncur.close()\nconn.close()",
+      "user": "anonymous",
+      "dateUpdated": "2020-12-21 21:05:12.591",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/python",
+        "title": true,
+        "lineNumbers": true,
+        "tableHide": false,
+        "editorHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "《本草纲目》_theories_气味补泻\n肝、胆 温补凉泻。辛补酸泻\n肝\n温补凉泻。辛补酸泻\n肝 温 补\n补\n肝 凉 泻\n泻\n肝 辛 补\n补\n肝 酸 泻\n泻\n胆\n温补凉泻。辛补酸泻\n胆 温 补\n补\n胆 凉 泻\n泻\n胆 辛 补\n补\n胆 酸 泻\n泻\n心、小肠 热补寒泻。咸补甘泻\n心\n热补寒泻。咸补甘泻\n心 热 补\n补\n心 寒 泻\n泻\n心 咸 补\n补\n心 甘 泻\n泻\n小肠\n热补寒泻。咸补甘泻\n小肠 热 补\n补\n小肠 寒 泻\n泻\n小肠 咸 补\n补\n小肠 甘 泻\n泻\n肺、大肠 凉补温泻。酸补辛泻\n肺\n凉补温泻。酸补辛泻\n肺 凉 补\n补\n肺 温 泻\n泻\n肺 酸 补\n补\n肺 辛 泻\n泻\n大肠\n凉补温泻。酸补辛泻\n大肠 凉 补\n补\n大肠 温 泻\n泻\n大肠 酸 补\n补\n大肠 辛 泻\n泻\n肾、膀胱 寒补热泻。苦补咸泻\n肾\n寒补热泻。苦补咸泻\n肾 寒 补\n补\n肾 热 泻\n泻\n肾 苦 补\n补\n肾 咸 泻\n泻\n膀胱\n寒补热泻。苦补咸泻\n膀胱 寒 补\n补\n膀胱 热 泻\n泻\n膀胱 苦 补\n补\n膀胱 咸 泻\n泻\n脾、胃 温热补，寒凉泻，各从其宜。甘补苦泻\n脾\n温热补，寒凉泻，各从其宜。甘补苦泻\n脾 热 补\n补\n脾 凉 泻\n泻\n脾 甘 补\n补\n脾 苦 泻\n泻\n胃\n温热补，寒凉泻，各从其宜。甘补苦泻\n胃 热 补\n补\n胃 凉 泻\n泻\n胃 甘 补\n补\n胃 苦 泻\n泻\n三焦、命门（同心。） 热补寒泻。咸补甘泻\n三焦\n热补寒泻。咸补甘泻\n三焦 热 补\n补\n三焦 寒 泻\n泻\n三焦 咸 补\n补\n三焦 甘 泻\n泻\n命门\n热补寒泻。咸补甘泻\n命门 热 补\n补\n命门 寒 泻\n泻\n命门 咸 补\n补\n命门 甘 泻\n泻\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1608594975167_353085571",
+      "id": "paragraph_1608594975167_353085571",
+      "dateCreated": "2020-12-21 15:56:15.167",
+      "dateStarted": "2020-12-21 21:05:12.602",
+      "dateFinished": "2020-12-21 21:05:13.241",
+      "status": "FINISHED"
+    },
+    {
+      "title": "x 五脏五味 TODO",
+      "text": "import psycopg2\nimport psycopg2.extras\nimport nltk\nfrom nltk.tokenize import regexp_tokenize\nimport re\n\nfrom neo4j import GraphDatabase\n\nuri \u003d \"bolt://localhost:7687\"\n\ndef save_neo4j(tx, ent1, cat1, rel,ent2, cat2):\n    print(rel)\n    cql \u003d \"\"\"\n    merge (en1:Entity{name: $en1, cat:$cat1})\n    merge (en2:Entity{name: $en2, cat:$cat2})\n    merge (en1)-[r:补泻{name: $rel}]-\u003e(en2)\n    \"\"\"\n    result \u003d tx.run(cql, en1\u003dent1,cat1\u003dcat1, rel\u003drel, en2\u003dent2,cat2\u003dcat2)\n    return result\n\n\ndef parseLine(str):\n    itemA \u003d \u0027\u0027\n    rel \u003d \u0027\u0027\n    itemB \u003d \u0027\u0027\n    extra \u003d \u0027\u0027\n    #print(str)\n    driver \u003d GraphDatabase.driver(uri, auth\u003d(\"neo4j\", \"lisa\"))\n    neo4jSess \u003d driver.session() \n    m \u003d re.finditer(u\u0027^(.*)（(.*)。）\u0027,str)\n    tmpLst \u003d list(m)\n    matchCnt \u003d len(tmpLst)\n    #print(matchCnt)\n    if matchCnt \u003e 0 :    \n        for i in tmpLst:\n            print(i.group(1), i.group(2))\n            a \u003d re.split(\u0027、|（|$\u0027 , i.group(1))\n            for j in a:\n                if(re.search(\u0027）\u0027, j) is None):\n                    print(j)\n                    print(i.group(2))\n                    b \u003d re.findall(\u0027(.)(补|泻)\u0027, i.group(2))\n                    for k in b:\n                        print(j, k[0], k[1])\n                        neo4jSess.write_transaction(save_neo4j, k[0], \u0027气味\u0027, k[1], j,\u0027脏\u0027)    \n\n\n    neo4jSess.close()\n    driver.close()\n    return None        \n\n\nconn \u003d psycopg2.connect(database\u003d\"notes\", user\u003d\"postgres\", password\u003d\"post\", host\u003d\"127.0.0.1\", port\u003d\"5432\")\n\n#cur \u003d conn.cursor()\ncur \u003d conn.cursor(cursor_factory\u003dpsycopg2.extras.DictCursor)\nsql \u003d \"\"\"select * from infobot\n        where title like \u0027%五脏五味补泻%\u0027\"\"\"\n\ncur.execute(sql)\nrows \u003d cur.fetchall()\nfor x in rows:\n    print(x[\u0027title\u0027])\n\n    lines \u003d x[\u0027content\u0027].splitlines()\n    for l in lines:\n        temp \u003d parseLine(l)\n\ncur.close()\nconn.close()",
+      "user": "anonymous",
+      "dateUpdated": "2020-12-22 14:59:35.101",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/python",
+        "title": true,
+        "lineNumbers": true,
+        "tableHide": false,
+        "editorHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1608677231944_679445178",
+      "id": "paragraph_1608677231944_679445178",
+      "dateCreated": "2020-12-22 14:47:11.944",
+      "status": "READY"
+    },
+    {
+      "title": "x 脏腑虚实标本用药",
+      "text": "import psycopg2\nimport psycopg2.extras\nimport nltk\nfrom nltk.tokenize import regexp_tokenize\nimport re\n\ndef save_neo4j(tx, ent1, cat1, rel,ent2, cat2):\n    print(rel)\n    cql \u003d \"\"\"\n    merge (en1:Entity{name: $en1, cat:$cat1})\n    merge (en2:Entity{name: $en2, cat:$cat2})\n    merge (en1)-[r:补泻{name: $rel}]-\u003e(en2)\n    \"\"\"\n    result \u003d tx.run(cql, en1\u003dent1,cat1\u003dcat1, rel\u003drel, en2\u003dent2,cat2\u003dcat2)\n    return result\n    \ndef parseLine(name, src, str):\n    #print(str)\n    m \u003d re.findall(u\u0027藏(.)\u0027, str)\n    if m:\n        for i in m:\n            print(name, \u0027藏\u0027, i)\n            #neo4jSess.write_transaction(save_neo4j, k[0], \u0027气味\u0027, k[1], j,\u0027脏\u0027) \n    m \u003d re.findall(\u0027主(.*?)[，|。]\u0027, str)\n    if m:\n        for i in m:\n            if re.search(\u0027同\u0027, i) is None:\n                print(name, \u0027主\u0027, i)\n    m \u003d re.match(\u0027(.病)∶(.*$)\u0027, str)\n    if m:\n        print(m.group(1), m.group(2))\n\n\nconn \u003d psycopg2.connect(database\u003d\"notes\", user\u003d\"postgres\", password\u003d\"post\", host\u003d\"127.0.0.1\", port\u003d\"5432\")\n\n#cur \u003d conn.cursor()\ncur \u003d conn.cursor(cursor_factory\u003dpsycopg2.extras.DictCursor)\nsql \u003d \"\"\"select * from infobot\n        where title like \u0027%脏腑虚实标本用药式%\u0027 order by id\"\"\"\n\ncur.execute(sql)\nrows \u003d cur.fetchall()\nfor x in rows:\n    name \u003d re.sub(u\u0027《本草纲目》.*_\u0027, \u0027\u0027, x[\u0027title\u0027])\n    #print(name)\n    lines \u003d x[\u0027content\u0027].splitlines()\n    for l in lines:\n        temp \u003d parseLine(name, x[\u0027id\u0027], l)\n\ncur.close()\nconn.close()",
+      "user": "anonymous",
+      "dateUpdated": "2020-12-22 16:55:41.171",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/python",
+        "title": true,
+        "lineNumbers": true,
+        "tableHide": false,
+        "editorHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "肝 藏 魂\n肝 主 血\n肝 主 目\n肝 主 筋\n肝 主 呼\n肝 主 怒\n本病 诸风眩晕，僵仆强直，惊痫，两胁肿痛，胸肋满痛，呕血，小腹疝痛瘕，女人经病。\n标病 寒热疟，头痛吐涎，目赤面青，多怒，耳闭颊肿，筋挛卵缩，丈夫疝，女人少腹肿痛、阴病。\n心 藏 神\n心 主 血\n心 主 言\n心 主 汗\n心 主 笑\n本病 诸热瞀螈，惊惑谵妄烦乱，啼笑骂詈，怔忡健忘，自汗，诸痛痒疮疡。\n标病 肌热畏寒战栗，舌不能言，面赤目黄，手心烦热，胸胁满痛，引腰背、肩胛、肘臂。\n脾 藏 意\n脾 主 营卫\n脾 主 味\n脾 主 肌肉\n脾 主 四肢\n本病 诸湿肿胀，痞满噫气，大小便闭，黄胆痰饮，吐泻霍乱，心腹痛，饮食不化。\n标病 身体肿，重困嗜卧，四肢不举，舌本强痛，足大趾不用，九窍不通，诸痉项强。\n肺 藏 魄\n肺 主 闻\n肺 主 哭\n肺 主 皮毛\n本病  诸气郁，诸痿喘呕，气短，咳嗽上逆，咳唾脓血，不得卧，小不禁。\n标病 洒淅寒热，伤风自汗，肩背痛冷，臂前廉痛。\n肾 藏 志\n肾 主 听\n肾 主 骨\n肾 主 二阴\n本病 诸寒厥逆，骨痿腰痛，腰冷如冰，足肿寒，少腹满急疝瘕，大便闭泄，吐利腥秽\n标病 发热不恶热，头眩头痛，咽痛舌燥，脊股后廉痛。\n命门 藏 精\n命门 主 三焦元气\n本病  前后癃闭，气逆里急，疝痛奔豚，消渴膏淋，精漏精寒，赤白浊，溺血，崩中带漏。\n标病 \n三焦 主 升降出入\n三焦 主 纳\n三焦 主 化\n三焦 主 出\n本病  诸热瞀螈，暴病暴死暴喑，躁扰狂越，谵妄惊骇，诸血溢血泄，诸气逆冲上，诸疮疡痘疹瘤核。 上热则喘满，诸呕吐酸，胸痞胁痛，食饮不消，头上出汗。 中热则善饥而瘦，解中满，诸胀腹大，诸病有声，鼓之如鼓，上下关格不通，霍乱吐利。 下热则暴注下迫，水液混浊，下部肿满，小便淋沥或不通，大便闭结下痢。 上寒则吐饮食痰水，胸痹，前后引痛，食已还出。 中寒则饮食不化，寒胀，反胃吐水，湿泻不渴。 下寒则二便不禁，脐腹冷，疝痛。\n标病 恶寒战栗，如丧神守，耳鸣耳聋，嗌肿喉痹，诸病肿不用。\n胆 主 血\n胆 主 目\n胆 主 筋\n胆 主 呼\n胆 主 怒\n本病 口苦，呕苦汁，善太息，澹澹如人将捕状，目昏不眠。\n标病 寒热往来，疟，胸胁痛，头额痛，耳痛鸣聋，瘰结核\n胃 主 容受\n胃 主 营卫\n胃 主 味\n胃 主 肌肉\n胃 主 四肢\n本病 噎膈反胃，中满肿胀，呕吐泻痢，霍乱腹痛，消中善饥，不消食，伤饮食，胃管当心痛，支两胁。\n标病 发热蒸蒸，身前热，身前寒，发狂谵语，咽痹，上齿痛，口眼斜，鼻痛鼽衄赤。\n大肠 主 变化\n本病 大便闭结，泄痢下血，里急后重，疽痔脱肛，肠鸣而痛。\n标病 齿痛喉痹，颈肿口干，咽中如核，鼽衄目黄，手大指次指痛，宿食发热寒栗。\n小肠 主 分泌水谷\n本病 大便水谷利，小便短，小便闭，小便血，小便自利，大便后血，小肠气痛，宿食夜热旦止。\n标病 身热恶寒，嗌痛颔肿，口糜耳聋。\n膀胱 主 津液\n本病 小便淋沥，或短数，或黄赤，或白，或遗失，或气痛。\n标病 发热恶寒，头痛，腰脊强，鼻窒，足小指不用。\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1608681239544_691697450",
+      "id": "paragraph_1608681239544_691697450",
+      "dateCreated": "2020-12-22 15:53:59.544",
+      "dateStarted": "2020-12-22 16:55:41.201",
+      "dateFinished": "2020-12-22 16:55:41.285",
+      "status": "FINISHED"
+    },
+    {
+      "title": "x 脏腑虚..用药l",
+      "text": "import psycopg2\nimport psycopg2.extras\nimport nltk\nfrom nltk.tokenize import regexp_tokenize\nimport re\n\ndef parseChapter(name, src, str):\n    #print(str)\n    #m \u003d re.finditer(u\u0027^(.*)(本病.*)(标病.*)\u003cl(.*)l\u003e\u0027, str, re.MULTILINE)\n    m \u003d re.search(\u0027\u003cl(.*)l\u003e\u0027, str, re.DOTALL)\n    if m:\n        #print(m.group(1))\n        #m \u003d re.split(\u0027(.{3})之:\u0027, m.group(1).strip())\n        m \u003d re.findall(\u0027(.{3})之:(.*?)(?\u003d...之|$)\u0027, m.group(1).strip(), re.DOTALL)  #look ahead match\n        for i in m:\n            print(i)\n    \n\nconn \u003d psycopg2.connect(database\u003d\"notes\", user\u003d\"postgres\", password\u003d\"post\", host\u003d\"127.0.0.1\", port\u003d\"5432\")\n\n#cur \u003d conn.cursor()\ncur \u003d conn.cursor(cursor_factory\u003dpsycopg2.extras.DictCursor)\nsql \u003d \"\"\"select * from infobot\n        where title like \u0027%脏腑虚实标本用药式%\u0027 order by id\"\"\"\n\ncur.execute(sql)\nrows \u003d cur.fetchall()\nfor x in rows:\n    name \u003d re.sub(u\u0027《本草纲目》.*_\u0027, \u0027\u0027, x[\u0027title\u0027])\n    #print(name)\n    temp \u003d parseChapter(name, x[\u0027id\u0027], x[\u0027content\u0027])\n\ncur.close()\nconn.close()",
+      "user": "anonymous",
+      "dateUpdated": "2020-12-22 20:43:28.119",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/python",
+        "title": true,
+        "lineNumbers": true,
+        "tableHide": false,
+        "editorHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "(\u0027有余泻\u0027, \u0027泻子甘草行气（香附, 芎瞿麦, 牵牛, 青橘皮）\\n - 行血;（红花鳖, 甲桃仁, 莪术, 京三棱, 穿山甲, 大黄, 水蛭, 虻虫, 苏木, 牡丹皮）\\n - 镇惊;（雄黄, 金箔, 铁落, 真珠, 代赭石, 夜明砂, 胡粉, 银箔, 铅丹, 龙骨, 石决明）\\n - 搜风;（羌活, 荆芥, 薄荷, 槐子, 蔓荆子, 白花蛇, 独活, 防风, 皂荚, 乌头, 白附子, 僵蚕, 蝉蜕）\\n\u0027)\n(\u0027不足补\u0027, \u0027补母（枸杞, 杜仲, 狗脊, 熟地黄, 苦参, 萆阿胶, 菟丝子）;\\n -  补血（当归, 牛膝, 续断, 白芍药, 血竭, 没药, 芎）\\n - 补气;（天麻, 柏子仁, 白术, 菊花, 细辛, 密蒙花, 决明谷, 精草, 生姜）\\n\u0027)\n(\u0027本热寒\u0027, \u0027 泻木（芍药, 乌梅, 泽泻）; 泻火（黄连, 龙胆, 草黄, 芩苦茶, 猪胆）; \\n - 攻里（大黄）\\n\u0027)\n(\u0027标热发\u0027, \u0027 和解（柴胡, 半夏）; 解肌（桂枝, 麻黄）;\u0027)\n(\u0027火实泻\u0027, \u0027泻子（黄连,大黄）,\\n - 气（甘草,人参,赤茯苓,木通,黄柏）,\\n - 血（丹参,牡丹,生地黄,玄参）,\\n - 镇惊（朱砂,牛黄,紫石英）\\n\u0027)\n(\u0027神虚补\u0027, \u0027补母（细辛,乌梅,酸枣仁,生姜,陈皮）,\\n - 气（桂心,泽泻,白茯苓,茯神,远志,石菖蒲）,\\n - 血（当归,乳香,熟地黄,没药）\\n\u0027)\n(\u0027本热寒\u0027, \u0027 泻火（黄芩,竹叶,麦门冬,芒硝,炒盐）,\\n - 凉血（地黄,栀子,天竺黄）\\n\u0027)\n(\u0027标热发\u0027, \u0027散火（甘草,独活,麻黄,柴胡,龙脑）\u0027)\n(\u0027土实泻\u0027, \u0027泻子（诃子,防风,桑白皮,葶苈）,\\n - 吐（豆豉,栀子,萝卜子,常山,瓜蒂,郁金齑汁,藜芦苦参,赤小豆,盐汤,苦茶）,\\n - 下（大黄,芒硝,青礞石,大戟,甘遂,续随子,芫花）\\n\u0027)\n(\u0027土虚补\u0027, \u0027 补母（桂心,茯苓）,\\n - 气（人参,黄升,麻葛根,甘草,陈橘皮,藿香,葳蕤,缩砂,仁木香,扁豆）,\\n - 血（白术,苍术,白芍药,胶饴,大枣,干姜,木瓜,乌梅,蜂蜜）\\n\u0027)\n(\u0027本湿除\u0027, \u0027燥中宫（白术,苍术,橘皮,半夏,吴茱萸,南星草,豆蔻,白芥子）,洁净府（木通,赤茯苓,猪苓,藿香）\\n\u0027)\n(\u0027标湿渗\u0027, \u0027开鬼门（葛根,苍术,麻黄,独活）\u0027)\n(\u0027气实泻\u0027, \u0027泻子（泽泻,葶苈,桑白皮,地骨皮）,\\n - 除湿（半夏,白矾,白茯苓,薏苡仁,木瓜,橘皮）,\\n - 泻火（粳米,石膏,寒水石,知母,诃子）,\\n - 通滞（枳壳,薄荷,干生姜,木香,浓朴,杏仁,皂荚,桔梗,紫苏梗）\\n\u0027)\n(\u0027气虚补\u0027, \u0027 补母（甘草,人参,升麻,黄山药）,\\n - 润燥（蛤蚧,阿胶,麦门冬,贝母,百合,天花粉,天门冬）,\\n - 敛肺（乌梅,粟壳,五味子,芍药,五倍子）\\n\u0027)\n(\u0027本热清\u0027, \u0027清金（黄芩,知母,麦门冬,栀子,沙参,紫菀,天门冬）\\n\u0027)\n(\u0027本寒温\u0027, \u0027温肺（丁香,藿香,款冬花,檀香,白豆蔻,益智,缩砂,糯米,百部）\\n\u0027)\n(\u0027标寒散\u0027, \u0027解表（麻黄,葱白,紫苏）\u0027)\n(\u0027水强泻\u0027, \u0027泻子（大戟,牵牛）,\\n - 泻腑（泽泻,猪苓,车前子,防己,茯苓）\\n\u0027)\n(\u0027水弱补\u0027, \u0027 补母（人参,山药）,\\n - 气（知母,玄参,补骨脂,砂仁,苦参）,\\n - 血（黄柏,枸杞,熟地黄,锁阳肉,苁蓉山,茱萸,阿胶,五味子）\\n\u0027)\n(\u0027本热攻\u0027, \u0027下（伤寒少阴证，口燥咽干，大承气汤。）,\u0027)\n(\u0027标寒解\u0027, \u0027 解表（麻黄,细辛,独活,桂枝）\\n\u0027)\n(\u0027标热凉\u0027, \u0027 清热（玄参,连翘,甘草,猪肤）\u0027)\n(\u0027火强泻\u0027, \u0027泻相火（黄柏, 知母, 牡丹皮, 地骨皮, 生地黄, 茯苓, 玄参, 寒水石）\\n\u0027)\n(\u0027火弱补\u0027, \u0027益阳（附子, 肉桂, 益智子, 破故纸, 沉香, 川乌头,硫黄,天雄,乌药,阳起石,舶,茴香,胡桃,巴戟,天丹砂,当归,蛤蚧,覆盆）\\n\u0027)\n(\u0027精脱固\u0027, \u0027 涩滑（牡蛎,芡实,金樱子,五味子,远志,山茱萸,蛤粉）\u0027)\n(\u0027实火泻\u0027, \u0027 汗（麻黄,柴胡,葛根,荆芥,升麻,薄荷,羌活,石膏）,\\n - 吐（瓜蒂,沧盐,齑汁）,\\n - 下（大黄,芒硝）\\n\u0027)\n(\u0027虚火补\u0027, \u0027上（人参,天雄,桂心）,\\n - 中（人参,黄丁,香木,香草果）,\\n - 下（附子,桂心,硫黄,人参,沉香,乌药,破故纸）\\n\u0027)\n(\u0027本热寒\u0027, \u0027上（黄芩,连翘,栀子,知母,玄参,石膏,生地黄）,\\n - 中（黄连,连翘,生地,石膏）,\\n - 下（黄柏,知母,生地,石膏,牡丹,地骨皮）\\n\u0027)\n(\u0027标热散\u0027, \u0027解表（柴胡,细辛,荆芥,羌活,葛根,石膏）\u0027)\n(\u0027实火泻\u0027, \u0027泻胆（龙胆,牛膝,猪胆,生蕤,仁生,酸枣仁,黄连,苦茶）\\n\u0027)\n(\u0027虚火补\u0027, \u0027温胆（人参,细辛,半夏,炒蕤仁,炒酸枣仁,当归,地黄）\\n\u0027)\n(\u0027本热平\u0027, \u0027降火（黄芩,黄连,芍药,连翘,甘草）,镇惊（黑铅,水银）\\n\u0027)\n(\u0027标热和\u0027, \u0027 和解（柴胡,芍药,黄芩,半夏,甘草）\u0027)\n(\u0027胃实泻\u0027, \u0027湿热（大黄,芒硝）饮食,（巴豆,神曲,山楂,阿魏砂,郁金,三棱轻粉）\\n\u0027)\n(\u0027胃虚补\u0027, \u0027湿热（苍术,白术,半夏,茯苓,橘皮,生姜）,寒湿（干姜,附子草,果官,桂,丁香,肉豆蔻,人参,黄）\\n\u0027)\n(\u0027本热寒\u0027, \u0027降火（石膏,地黄,犀角,黄连）\\n\u0027)\n(\u0027标热解\u0027, \u0027解肌（升麻,葛根,豆豉）\u0027)\n(\u0027肠实泻\u0027, \u0027热（大黄,芒硝,桃花,牵牛,巴豆,郁李仁,石膏）,\\n - 气（枳壳,木香,橘皮,槟榔）\\n\u0027)\n(\u0027肠虚补\u0027, \u0027气（皂荚）燥（桃仁,麻仁,杏仁,地黄,乳香,松子,当归肉,苁蓉）\\n - 湿（白术,苍术,半夏,硫磺）,陷（升麻,葛根）,脱（龙骨,白垩,诃子,粟壳,乌梅,白矾,赤石脂,禹余粮,石榴皮）\\n\u0027)\n(\u0027本热寒\u0027, \u0027清热（秦艽,槐角,地黄,黄芩）\\n\u0027)\n(\u0027本寒温\u0027, \u0027温里（干姜,附子,肉豆蔻）\\n\u0027)\n(\u0027标热散\u0027, \u0027解肌（石膏,白芷,升麻,葛根）\u0027)\n(\u0027实热泻\u0027, \u0027气（木通,猪苓,滑石,瞿麦泽,泻灯草）,血（地黄,蒲黄,赤茯苓,栀子,牡丹皮）\\n\u0027)\n(\u0027虚寒补\u0027, \u0027气（白术,楝实,茴香,砂仁,神曲,扁豆）,血（桂心,延胡索）\\n\u0027)\n(\u0027本热寒\u0027, \u0027降火（黄柏,黄芩,黄连,连翘,栀子）\\n\u0027)\n(\u0027标热散\u0027, \u0027解肌（本羌活,防风,蔓荆）\u0027)\n(\u0027实热泻\u0027, \u0027泄火（滑石,猪苓,泽泻,茯苓）\\n\u0027)\n(\u0027下虚补\u0027, \u0027热（黄柏知母）,寒（桔梗,升麻,益智,乌药,山茱萸）\\n\u0027)\n(\u0027本热利\u0027, \u0027降火（地黄,栀子,茵陈,黄柏,牡丹皮,地骨皮）\\n\u0027)\n(\u0027标寒发\u0027, \u0027发表（麻黄,桂枝,羌活,苍术,防己,黄木贼）\u0027)\n"
           }
         ]
       },
@@ -359,8 +601,8 @@
       "jobName": "paragraph_1604014992549_1653350979",
       "id": "paragraph_1604014992549_1653350979",
       "dateCreated": "2020-10-29 16:43:12.549",
-      "dateStarted": "2020-12-02 19:41:17.065",
-      "dateFinished": "2020-12-02 19:41:17.130",
+      "dateStarted": "2020-12-22 20:43:28.128",
+      "dateFinished": "2020-12-22 20:43:28.153",
       "status": "FINISHED"
     },
     {
